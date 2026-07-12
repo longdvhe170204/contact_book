@@ -5,8 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/be-fschool/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/DBContext.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSocketConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/AssignmentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/AttendanceRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ChatMessageRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ConductRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/GradeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/NotificationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/RoleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ScheduleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/SubjectRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,25 +33,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "longdvhe170204"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;longdvhe170204&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/longdvhe170204/contact_book.git",
-    "accountId": "8912c5cb-4ac1-44fd-bdb6-f8d62baf30a5"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/longdvhe170204/contact_book.git&quot;,
+    &quot;accountId&quot;: &quot;8912c5cb-4ac1-44fd-bdb6-f8d62baf30a5&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="3GOcjSTDJJy6Q5eEwwnpHcFjAhZ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -52,10 +66,10 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "develop",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Prm/contact_book",
+    "last_opened_file_path": "D:/Prm/contact_book/be-fschool/src/main/java/com/tinder/befschool/repository",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -65,7 +79,20 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\repository" />
+      <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\config" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.BeFschoolApplication">
+    <configuration name="BeFschoolApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="be-fschool" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.tinder.befschool.BeFschoolApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BeFschoolApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="be-fschool" />
