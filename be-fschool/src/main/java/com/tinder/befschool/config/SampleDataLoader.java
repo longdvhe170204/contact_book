@@ -35,7 +35,7 @@ public class SampleDataLoader {
             Role teacherRole = ensureRole(roleRepository, RoleName.TEACHER, "Teacher account");
 
             if (userRepository.count() == 0) {
-                userRepository.saveAll(List.of(
+                List<User> initialUsers = List.of(
                         createStudent("Nguyễn Văn A", "0123456789", "10A1", "a@example.com", LocalDate.of(2008, 1, 1), studentRole),
                         createStudent("Trần Thị B", "0987654321", "10A1", "b@example.com", LocalDate.of(2008, 2, 2), studentRole),
                         createStudent("Lê Văn C", "0111222333", "10A2", "c@example.com", LocalDate.of(2008, 3, 3), studentRole),
@@ -50,7 +50,9 @@ public class SampleDataLoader {
                         createTeacher("GV. Sport", "0200000009", "Thể Dục", "T009", teacherRole),
                         createTeacher("GV. Tech", "0200000010", "Tin Học", "T010", teacherRole),
                         createTeacher("GV. Moral", "0200000011", "GDCD", "T011", teacherRole)
-                ));
+                );
+                initialUsers.forEach(user -> user.setPassword(passwordEncoder.encode(user.getPassword())));
+                userRepository.saveAll(initialUsers);
             } else {
                 // Migration: Ensure existing users have roles and encrypted password
                 userRepository.findAll().forEach(user -> {
@@ -72,7 +74,7 @@ public class SampleDataLoader {
                         }
                         updated = true;
                     }
-                    
+
                     // Encrypt if password is null or plain text '123456' or doesn't look like BCrypt
                     String currentPw = user.getPassword();
                     if (currentPw == null || currentPw.isEmpty() || currentPw.equals("123456") || !currentPw.startsWith("$2a$")) {
