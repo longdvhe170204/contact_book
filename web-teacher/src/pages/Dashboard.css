@@ -1,0 +1,370 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dashboard-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dashboard-title-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+.dashboard-title-section p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+.stat-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.stat-card-change {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-card-change.positive {
+  color: var(--success);
+}
+
+.stat-card-change.neutral {
+  color: var(--text-muted);
+}
+
+.stat-card-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-soft);
+  color: var(--primary);
+  transition: var(--transition);
+}
+
+.stat-card:hover .stat-card-icon-wrapper {
+  background: var(--primary);
+  color: #ffffff;
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transition: var(--transition);
+}
+
+.chart-card:hover {
+  box-shadow: var(--shadow-premium);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chart-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.chart-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* SVG Chart details */
+.chart-content {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Column Chart specific */
+.bar-chart-svg {
+  width: 100%;
+  height: 320px;
+  overflow: visible;
+}
+
+.chart-bar {
+  transition: fill 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.chart-bar:hover {
+  fill: var(--secondary) !important;
+  opacity: 0.9;
+}
+
+.chart-grid-line {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.chart-axis-line {
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.chart-label {
+  fill: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+.chart-value-label {
+  fill: var(--text-main);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(0);
+}
+
+.bar-group:hover .chart-value-label {
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+/* Doughnut Chart specific */
+.donut-chart-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.donut-chart-svg {
+  width: 220px;
+  height: 220px;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.donut-segment {
+  fill: none;
+  stroke-width: 24px;
+  transition: stroke-width 0.3s ease, stroke 0.3s ease;
+  cursor: pointer;
+}
+
+.donut-segment:hover {
+  stroke-width: 28;
+}
+
+.donut-center-text {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  transform: rotate(90deg);
+  transform-origin: center;
+}
+
+.donut-center-val {
+  font-size: 28px;
+  font-weight: 800;
+  fill: var(--text-main);
+}
+
+.donut-center-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--text-muted);
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+
+/* Class list table/horizontal bars */
+.class-dist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.class-dist-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.class-dist-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.class-dist-name {
+  color: var(--text-main);
+}
+
+.class-dist-count {
+  color: var(--text-muted);
+}
+
+.class-dist-bar-bg {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.class-dist-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Loading skeleton */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
