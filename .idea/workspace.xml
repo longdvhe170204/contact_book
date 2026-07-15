@@ -5,7 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/student_attendance_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prm/lib/services/storage_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/contact_book.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/contact_book.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/.dart_tool/dartpad/web_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/dartpad/web_plugin_registrant.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/.dart_tool/package_graph.json" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/package_graph.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/prm/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/prm/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,12 +64,13 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "khuong",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/contact_book/contact_book/prm/lib/screen",
+    "last_opened_file_path": "D:/contact_book/contact_book/prm/lib/services",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -70,11 +82,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\contact_book\contact_book\prm\lib\services" />
       <recent name="D:\contact_book\contact_book\prm\lib\screen" />
       <recent name="D:\contact_book\contact_book\prm\lib\models" />
       <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\controller" />
       <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service\impl" />
     </key>
   </component>
   <component name="RunManager">
