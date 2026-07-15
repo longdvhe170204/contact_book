@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSocketConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/AssignmentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/AttendanceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ChatMessageRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ConductRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/GradeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/NotificationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/RoleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ScheduleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/SubjectRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,7 +49,8 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "develop",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "khuong",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Prm/contact_book/be-fschool/src/main/java/com/tinder/befschool/repository",
@@ -81,11 +65,12 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto" />
       <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\repository" />
       <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\config" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BeFschoolApplication">
+  <component name="RunManager">
     <configuration name="BeFschoolApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="be-fschool" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.tinder.befschool.BeFschoolApplication" />
