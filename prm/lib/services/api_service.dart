@@ -420,6 +420,7 @@ class ApiService {
   static Future<void> saveAttendance(
       int teacherId, {
         required String className,
+        required String subject,
         required String date,
         required List<Map<String, dynamic>> records,
       }) async {
@@ -429,6 +430,7 @@ class ApiService {
         headers: await _getHeaders(),
         body: json.encode({
           'className': className,
+          'subject': subject,
           'date': date,
           'records': records,
         }),

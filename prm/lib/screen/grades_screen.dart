@@ -1,5 +1,4 @@
 ﻿import 'package:flutter/material.dart';
-
 import '../models/grade.dart';
 import '../models/teacher_grade.dart';
 import '../models/user.dart';
@@ -164,20 +163,38 @@ class _GradesScreenState extends State<GradesScreen> {
               final average = grade.average ?? 0;
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
-                child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: _gradeColor(average).withOpacity(0.15),
                     child: Icon(Icons.book, color: _gradeColor(average)),
                   ),
-                  title: Text(grade.subject),
-                  subtitle: Text('15p: ${_formatScores(grade.tx15)} | 1 tiet: ${_formatScores(grade.tx1tiet)}'),
-                  trailing: Text(
-                    average.toStringAsFixed(1),
                     style: TextStyle(
                       color: _gradeColor(average),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(12),
+                          bottomRight: Radius.circular(12),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildGradeRow('Điểm 15 phút', _formatScores(grade.tx15)),
+                          const Divider(height: 16),
+                          _buildGradeRow('Điểm 1 tiết', _formatScores(grade.tx1tiet)),
+                          const Divider(height: 16),
+                          _buildGradeRow('Điểm Giữa kỳ', _formatNullable(grade.giuaKy)),
+                          const Divider(height: 16),
+                          _buildGradeRow('Điểm Cuối kỳ', _formatNullable(grade.cuoiKy)),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
@@ -312,6 +329,16 @@ class _GradesScreenState extends State<GradesScreen> {
     );
   }
 
+  Widget _buildGradeRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.black54, fontSize: 14)),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87)),
+      ],
+    );
+  }
+
   TeacherGrade? _findTeacherGrade(int studentId) {
     for (final grade in _teacherGrades) {
       if (grade.studentId == studentId) {
@@ -327,11 +354,35 @@ class _GradesScreenState extends State<GradesScreen> {
       return;
     }
 
+    final formKey = GlobalKey<FormState>();
+
     final tx15Controller = TextEditingController(text: _joinScores(grade?.tx15 ?? const []));
     final tx1TietController = TextEditingController(text: _joinScores(grade?.tx1tiet ?? const []));
     final giuaKyController = TextEditingController(text: grade?.giuaKy?.toString() ?? '');
     final cuoiKyController = TextEditingController(text: grade?.cuoiKy?.toString() ?? '');
     final averageController = TextEditingController(text: grade?.average?.toString() ?? '');
+
+    String? validateMultipleScores(String? value) {
+      if (value == null || value.trim().isEmpty) return null;
+      if (RegExp(r'[a-zA-Z]').hasMatch(value)) return 'Không nhập chữ, chỉ nhập số';
+      final parts = value.split(',');
+      for (var part in parts) {
+        if (part.trim().isEmpty) continue;
+        final score = double.tryParse(part.trim());
+        if (score == null) return 'Sai định dạng số';
+        if (score < 0 || score > 10) return 'Điểm phải từ 0 đến 10';
+      }
+      return null;
+    }
+
+    String? validateSingleScore(String? value) {
+      if (value == null || value.trim().isEmpty) return null;
+      if (RegExp(r'[a-zA-Z]').hasMatch(value)) return 'Không nhập chữ, chỉ nhập số';
+      final score = double.tryParse(value.trim());
+      if (score == null) return 'Sai định dạng số';
+      if (score < 0 || score > 10) return 'Điểm phải từ 0 đến 10';
+      return null;
+    }
 
     final saved = await showDialog<bool>(
       context: context,
@@ -340,40 +391,22 @@ class _GradesScreenState extends State<GradesScreen> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              title: Text('Diem cua ${student.name}'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextField(
                       controller: tx15Controller,
-                      decoration: const InputDecoration(labelText: 'Diem 15 phut'),
                     ),
                     const SizedBox(height: 12),
-                    TextField(
                       controller: tx1TietController,
-                      decoration: const InputDecoration(labelText: 'Diem 1 tiet'),
                     ),
                     const SizedBox(height: 12),
-                    TextField(
                       controller: giuaKyController,
-                      decoration: const InputDecoration(labelText: 'Giua ky'),
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     ),
                     const SizedBox(height: 12),
-                    TextField(
                       controller: cuoiKyController,
-                      decoration: const InputDecoration(labelText: 'Cuoi ky'),
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: averageController,
-                      decoration: const InputDecoration(
-                        labelText: 'Diem trung binh',
-                        helperText: 'De trong neu muon backend tu tinh',
                       ),
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     ),
                   ],
                 ),
@@ -381,12 +414,14 @@ class _GradesScreenState extends State<GradesScreen> {
               actions: [
                 TextButton(
                   onPressed: isSaving ? null : () => Navigator.pop(dialogContext, false),
-                  child: const Text('Huy'),
                 ),
                 ElevatedButton(
                   onPressed: isSaving
                       ? null
                       : () async {
+                          if (!formKey.currentState!.validate()) {
+                            return;
+                          }
                           setDialogState(() {
                             isSaving = true;
                           });
@@ -400,7 +435,6 @@ class _GradesScreenState extends State<GradesScreen> {
                               tx1tiet: _parseScores(tx1TietController.text),
                               giuaKy: _parseNullableDouble(giuaKyController.text),
                               cuoiKy: _parseNullableDouble(cuoiKyController.text),
-                              average: _parseNullableDouble(averageController.text),
                             );
                             if (dialogContext.mounted) {
                               Navigator.pop(dialogContext, true);
