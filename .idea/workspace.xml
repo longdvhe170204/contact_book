@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/GradeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/StudentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/TeacherController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/TeacherGradeResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/TeacherGradeUpsertRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/GradeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/TeacherService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/GradeServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/TeacherServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/ApiResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +65,7 @@
     "git-widget-placeholder": "khuong",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/contact_book/contact_book/be-fschool/src/main/java/com/tinder/befschool/service/impl",
+    "last_opened_file_path": "D:/contact_book/contact_book/be-fschool/src/main/java/com/tinder/befschool/controller",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -88,11 +78,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service\impl" />
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto" />
       <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\controller" />
-      <recent name="D:\contact_book\contact_book\prm\lib\screen" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\repository" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service\impl" />
     </key>
   </component>
   <component name="RunManager">
