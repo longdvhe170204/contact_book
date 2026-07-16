@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/teacher_attendance_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/contact_book.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/contact_book.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/screen/grades_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/grades_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/screen/student_attendance_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/student_attendance_screen.dart" afterDir="false" />
-    </list>
+    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,7 +74,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Merging long",
+    "git-widget-placeholder": "long",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Prm/contact_book/be-fschool/src/main/java/com/tinder/befschool/service",
