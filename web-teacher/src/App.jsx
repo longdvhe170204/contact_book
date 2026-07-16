@@ -111,7 +111,7 @@ function App() {
               <Route path="notifications" element={<NotificationsPlaceholder />} />
               <Route path="classes" element={<ClassesPlaceholder />} />
               <Route path="schedule" element={<ScheduleMakerPlaceholder />} />
-              <Route path="grades" element={<ReportsPlaceholder />} />
+              <Route path="grades" element={<Grades />} />
               <Route path="attendance" element={<Attendance />} />
               <Route path="finance" element={<FinancePlaceholder />} />
             </Route>

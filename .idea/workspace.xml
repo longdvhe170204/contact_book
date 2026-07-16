@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
+    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/web-teacher/src/pages/Attendance.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-teacher/src/pages/Grades.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web-teacher/src/pages/Grades.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/src/App.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +68,7 @@
     "git-widget-placeholder": "khuong",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/contact_book/contact_book",
+    "last_opened_file_path": "D:/contact_book/contact_book/be-fschool/src/main/java/com/tinder/befschool/service",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -74,11 +81,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\controller" />
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto" />
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\repository" />
       <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto" />
       <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service\impl" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\controller" />
+      <recent name="D:\contact_book\contact_book\web-teacher\src\pages" />
     </key>
   </component>
   <component name="RunManager">
