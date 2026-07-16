@@ -3,6 +3,8 @@ import { useState, createContext, useEffect } from 'react';
 import Login from './pages/Login';
 import DashboardLayout from './components/DashboardLayout';
 import Students from './pages/Students';
+import ClassManagement from './pages/admin/ClassManagement';
+import ScheduleManagement from './pages/admin/ScheduleManagement';
 
 // Member 5 Pages
 import Dashboard from './pages/Dashboard';
@@ -20,13 +22,6 @@ const NotificationsPlaceholder = () => (
   <div className="card fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
     <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px' }}>Gửi Thông báo</h3>
     <p style={{ color: 'var(--text-muted)' }}>Màn hình Gửi Thông báo của Thành viên 1. Đang phát triển...</p>
-  </div>
-);
-
-const ClassesPlaceholder = () => (
-  <div className="card fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
-    <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px' }}>Quản lý Lớp học</h3>
-    <p style={{ color: 'var(--text-muted)' }}>Màn hình Quản lý Lớp học của Thành viên 2. Đang phát triển...</p>
   </div>
 );
 
@@ -107,8 +102,8 @@ function App() {
               {/* Other members' routes linked to placeholders */}
               <Route path="teachers" element={<TeachersPlaceholder />} />
               <Route path="notifications" element={<NotificationsPlaceholder />} />
-              <Route path="classes" element={<ClassesPlaceholder />} />
-              <Route path="schedule" element={<ScheduleMakerPlaceholder />} />
+                <Route path="classes" element={<ClassManagement />} />
+              <Route path="schedule" element={<ScheduleManagement />} />
               <Route path="grades" element={<ReportsPlaceholder />} />
               <Route path="finance" element={<FinancePlaceholder />} />
             </Route>

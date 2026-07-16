@@ -28,11 +28,23 @@ public class SampleDataLoader {
                              ScheduleRepository scheduleRepository,
                              NotificationRepository notificationRepository,
                              AssignmentRepository assignmentRepository,
+                             SubjectRepository subjectRepository,
                              ObjectMapper objectMapper,
                              PasswordEncoder passwordEncoder) {
         return args -> {
             Role studentRole = ensureRole(roleRepository, RoleName.STUDENT, "Student account");
             Role teacherRole = ensureRole(roleRepository, RoleName.TEACHER, "Teacher account");
+
+            if (subjectRepository.count() == 0) {
+                List<String> subjectNames = List.of("Toán", "Văn", "Anh Văn", "Vật Lý", "Hóa Học",
+                        "Sinh Học", "Lịch Sử", "Địa Lý", "Thể Dục", "Tin Học", "GDCD");
+                subjectRepository.saveAll(subjectNames.stream().map(name -> {
+                    Subject subject = new Subject();
+                    subject.setName(name);
+                    subject.setDescription("Môn " + name);
+                    return subject;
+                }).toList());
+            }
 
             if (userRepository.count() == 0) {
                 List<User> initialUsers = List.of(
