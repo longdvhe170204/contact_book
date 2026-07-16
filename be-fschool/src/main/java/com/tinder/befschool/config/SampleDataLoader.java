@@ -28,11 +28,23 @@ public class SampleDataLoader {
                              ScheduleRepository scheduleRepository,
                              NotificationRepository notificationRepository,
                              AssignmentRepository assignmentRepository,
+                             SubjectRepository subjectRepository,
                              ObjectMapper objectMapper,
                              PasswordEncoder passwordEncoder) {
         return args -> {
             Role studentRole = ensureRole(roleRepository, RoleName.STUDENT, "Student account");
             Role teacherRole = ensureRole(roleRepository, RoleName.TEACHER, "Teacher account");
+
+            if (subjectRepository.count() == 0) {
+                List<String> subjectNames = List.of("Toán", "Văn", "Anh Văn", "Vật Lý", "Hóa Học",
+                        "Sinh Học", "Lịch Sử", "Địa Lý", "Thể Dục", "Tin Học", "GDCD");
+                subjectRepository.saveAll(subjectNames.stream().map(name -> {
+                    Subject subject = new Subject();
+                    subject.setName(name);
+                    subject.setDescription("Môn " + name);
+                    return subject;
+                }).toList());
+            }
 
             if (userRepository.count() == 0) {
                 List<User> initialUsers = List.of(
@@ -138,25 +150,25 @@ public class SampleDataLoader {
 
             if (scheduleRepository.count() == 0) {
                 scheduleRepository.saveAll(List.of(
-                        createSchedule("10A1", 0, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
-                        createSchedule("10A1", 0, "Tiết 2", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:50", "08:35"),
-                        createSchedule("10A1", 0, "Tiết 3", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "08:40", "09:25"),
-                        createSchedule("10A1", 0, "Tiết 4", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "09:30", "10:15"),
-                        createSchedule("10A1", 0, "Tiết 5", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "10:20", "11:05"),
-                        createSchedule("10A1", 1, "Tiết 1", "Sinh Học", teachersByName.get("GV. X"), "Phòng 201", "07:00", "07:45"),
-                        createSchedule("10A1", 1, "Tiết 2", "Lịch Sử", teachersByName.get("GV. Y"), "Phòng 202", "07:50", "08:35"),
-                        createSchedule("10A1", 1, "Tiết 3", "Địa Lý", teachersByName.get("GV. Z"), "Phòng 203", "08:40", "09:25"),
-                        createSchedule("10A1", 1, "Tiết 4", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "09:30", "10:15"),
-                        createSchedule("10A1", 2, "Tiết 1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
-                        createSchedule("10A1", 2, "Tiết 2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
-                        createSchedule("10A1", 2, "Tiết 3", "Thể Dục", teachersByName.get("GV. Sport"), "Sân bóng", "08:40", "09:25"),
-                        createSchedule("10A1", 3, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
-                        createSchedule("10A1", 3, "Tiết 2", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "07:50", "08:35"),
-                        createSchedule("10A1", 3, "Tiết 3", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "08:40", "09:25"),
-                        createSchedule("10A1", 3, "Tiết 4", "Tin Học", teachersByName.get("GV. Tech"), "Phòng Lab", "09:30", "10:15"),
+                        createSchedule("10A1", 2, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
+                        createSchedule("10A1", 2, "Tiết 2", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:50", "08:35"),
+                        createSchedule("10A1", 2, "Tiết 3", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "08:40", "09:25"),
+                        createSchedule("10A1", 2, "Tiết 4", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "09:30", "10:15"),
+                        createSchedule("10A1", 2, "Tiết 5", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "10:20", "11:05"),
+                        createSchedule("10A1", 3, "Tiết 1", "Sinh Học", teachersByName.get("GV. X"), "Phòng 201", "07:00", "07:45"),
+                        createSchedule("10A1", 3, "Tiết 2", "Lịch Sử", teachersByName.get("GV. Y"), "Phòng 202", "07:50", "08:35"),
+                        createSchedule("10A1", 3, "Tiết 3", "Địa Lý", teachersByName.get("GV. Z"), "Phòng 203", "08:40", "09:25"),
+                        createSchedule("10A1", 3, "Tiết 4", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "09:30", "10:15"),
                         createSchedule("10A1", 4, "Tiết 1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
                         createSchedule("10A1", 4, "Tiết 2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
-                        createSchedule("10A1", 4, "Tiết 3", "GDCD", teachersByName.get("GV. Moral"), "Phòng 306", "08:40", "09:25")
+                        createSchedule("10A1", 4, "Tiết 3", "Thể Dục", teachersByName.get("GV. Sport"), "Sân bóng", "08:40", "09:25"),
+                        createSchedule("10A1", 5, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
+                        createSchedule("10A1", 5, "Tiết 2", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "07:50", "08:35"),
+                        createSchedule("10A1", 5, "Tiết 3", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "08:40", "09:25"),
+                        createSchedule("10A1", 5, "Tiết 4", "Tin Học", teachersByName.get("GV. Tech"), "Phòng Lab", "09:30", "10:15"),
+                        createSchedule("10A1", 6, "Tiết 1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
+                        createSchedule("10A1", 6, "Tiết 2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
+                        createSchedule("10A1", 6, "Tiết 3", "GDCD", teachersByName.get("GV. Moral"), "Phòng 306", "08:40", "09:25")
                 ));
             }
 

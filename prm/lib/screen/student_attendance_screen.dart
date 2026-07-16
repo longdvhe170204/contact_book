@@ -14,7 +14,7 @@ class StudentAttendanceScreen extends StatefulWidget {
 
 class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   User? _student;
-  
+
   // Date tracking
   late DateTime _currentWeekStart;
   late int _selectedDayOfWeek; // 0 for Mon to 6 for Sun
@@ -22,6 +22,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
   List<Schedule> _schedules = [];
   List<Attendance> _allAttendances = [];
   bool _isLoading = true;
+  User? _currentUser;
 
   final List<String> _weekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 
@@ -31,7 +32,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
     final now = DateTime.now();
     _currentWeekStart = _getStartOfWeek(now);
     _selectedDayOfWeek = now.weekday - 1;
-    
+
     _loadAllData();
   }
 
@@ -48,9 +49,9 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
     try {
       final user = await StorageService.getCurrentUser();
       if (!mounted || user == null) return;
-      
+
       final allAttendances = await ApiService.getStudentAttendance(user.id);
-      
+
       if (!mounted) return;
       setState(() {
         _student = user;
@@ -123,8 +124,8 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
     final dateStr = _formatDate(_selectedDate);
     try {
       // Find matching attendance by date AND className AND subject
-      return _allAttendances.firstWhere((a) => 
-        a.date == dateStr && 
+      return _allAttendances.firstWhere((a) =>
+        a.date == dateStr &&
         a.className == schedule.className &&
         a.subject == schedule.subject
       );
@@ -279,7 +280,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
         itemBuilder: (context, index) {
           final isSelected = _selectedDayOfWeek == index;
           final dateForDay = _currentWeekStart.add(Duration(days: index));
-          
+
           return GestureDetector(
             onTap: () {
               if (_selectedDayOfWeek != index) {
@@ -451,9 +452,9 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                     child: Row(
                       children: [
                         Icon(
-                          attendance.status == 'PRESENT' ? Icons.check_circle : 
+                          attendance.status == 'PRESENT' ? Icons.check_circle :
                           (attendance.status == 'ABSENT' ? Icons.cancel : Icons.warning),
-                          size: 14, 
+                          size: 14,
                           color: _statusColor(attendance.status)
                         ),
                         const SizedBox(width: 4),

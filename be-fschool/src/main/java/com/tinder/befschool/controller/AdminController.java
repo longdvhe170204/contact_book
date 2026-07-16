@@ -1,6 +1,7 @@
 package com.tinder.befschool.controller;
 
 import com.tinder.befschool.dto.ApiResponse;
+import com.tinder.befschool.dto.classroom.TeacherOptionResponse;
 import com.tinder.befschool.entity.Attendance;
 import com.tinder.befschool.entity.Role;
 import com.tinder.befschool.entity.RoleName;
@@ -8,7 +9,9 @@ import com.tinder.befschool.entity.User;
 import com.tinder.befschool.repository.AttendanceRepository;
 import com.tinder.befschool.repository.RoleRepository;
 import com.tinder.befschool.repository.UserRepository;
+import com.tinder.befschool.repository.SchoolClassRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,21 +21,25 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole('TEACHER')") // Sau này đổi thành ADMIN.
 public class AdminController {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AttendanceRepository attendanceRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SchoolClassRepository schoolClassRepository;
 
     public AdminController(UserRepository userRepository,
                            RoleRepository roleRepository,
                            AttendanceRepository attendanceRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           SchoolClassRepository schoolClassRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.attendanceRepository = attendanceRepository;
         this.passwordEncoder = passwordEncoder;
+        this.schoolClassRepository = schoolClassRepository;
     }
 
     public static class DashboardStatsResponse {
@@ -93,13 +100,7 @@ public class AdminController {
         stats.setTotalStudents(allStudents.size());
         stats.setTotalTeachers(allTeachers.size());
 
-        // Count unique classNames from students
-        long totalClasses = allStudents.stream()
-                .map(User::getClassName)
-                .filter(c -> c != null && !c.isBlank())
-                .distinct()
-                .count();
-        stats.setTotalClasses(totalClasses > 0 ? totalClasses : 0);
+        stats.setTotalClasses(schoolClassRepository.countByStatus(com.tinder.befschool.entity.SchoolClassStatus.ACTIVE));
 
         // Calculate attendance rate
         if (allAttendance.isEmpty()) {
@@ -116,7 +117,7 @@ public class AdminController {
         // Dynamic Revenue calculations based on actual student count in Database
         long studentCount = allStudents.size();
         double tuitionFeePerStudent = 1500000.0; // 1.5 million VND tuition fee per student
-        
+
         stats.setMonthlyRevenue(studentCount * tuitionFeePerStudent);
         List<MonthlyRevenueData> revData = List.of(
                 new MonthlyRevenueData("Tháng 2", studentCount * 1100000.0),
@@ -151,16 +152,28 @@ public class AdminController {
     }
 
 
-    @GetMapping("/classes")
-    public ResponseEntity<ApiResponse<List<String>>> getAllClasses() {
-        List<User> allStudents = userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT);
-        List<String> classes = allStudents.stream()
-                .map(User::getClassName)
-                .filter(c -> c != null && !c.isBlank())
-                .distinct()
-                .sorted()
+//    @GetMapping("/classes")
+//    public ResponseEntity<ApiResponse<List<String>>> getAllClasses() {
+//        List<User> allStudents = userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT);
+//        List<String> classes = allStudents.stream()
+//                .map(User::getClassName)
+//                .filter(c -> c != null && !c.isBlank())
+//                .distinct()
+//                .sorted()
+//                .toList();
+//        return ResponseEntity.ok(new ApiResponse<>(true, classes, "OK"));
+//    }
+
+    @GetMapping("/teachers")
+    public ResponseEntity<ApiResponse<List<TeacherOptionResponse>>> getAllTeachers() {
+        List<TeacherOptionResponse> teachers = userRepository
+                .findByRoles_NameOrderByNameAsc(RoleName.TEACHER)
+                .stream()
+                .map(user -> new TeacherOptionResponse(
+                        user.getId(), user.getName(), user.getPhoneNumber(),
+                        user.getEmployeeCode(), user.getSubject()))
                 .toList();
-        return ResponseEntity.ok(new ApiResponse<>(true, classes, "OK"));
+        return ResponseEntity.ok(new ApiResponse<>(true, teachers, "Lấy danh sách giáo viên thành công"));
     }
 
     @GetMapping("/students")
