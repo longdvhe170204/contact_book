@@ -3,6 +3,8 @@ import { useState, createContext, useEffect } from 'react';
 import Login from './pages/Login';
 import DashboardLayout from './components/DashboardLayout';
 import Students from './pages/Students';
+import Grades from './pages/Grades';
+import Attendance from './pages/Attendance';
 
 // Member 5 Pages
 import Dashboard from './pages/Dashboard';
@@ -110,6 +112,7 @@ function App() {
               <Route path="classes" element={<ClassesPlaceholder />} />
               <Route path="schedule" element={<ScheduleMakerPlaceholder />} />
               <Route path="grades" element={<ReportsPlaceholder />} />
+              <Route path="attendance" element={<Attendance />} />
               <Route path="finance" element={<FinancePlaceholder />} />
             </Route>
 

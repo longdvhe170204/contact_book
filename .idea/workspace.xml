@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/ApiResponse.java" afterDir="false" />
-    </list>
+    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,7 +61,7 @@
     "git-widget-placeholder": "khuong",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/contact_book/contact_book/be-fschool/src/main/java/com/tinder/befschool/controller",
+    "last_opened_file_path": "D:/contact_book/contact_book",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
