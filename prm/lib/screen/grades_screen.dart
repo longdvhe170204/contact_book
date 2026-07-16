@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/grade.dart';
 import '../models/teacher_grade.dart';
 import '../models/user.dart';
@@ -163,10 +164,15 @@ class _GradesScreenState extends State<GradesScreen> {
               final average = grade.average ?? 0;
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: ExpansionTile(
                   leading: CircleAvatar(
                     backgroundColor: _gradeColor(average).withOpacity(0.15),
                     child: Icon(Icons.book, color: _gradeColor(average)),
                   ),
+                  title: Text(grade.subject, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  subtitle: Text(
+                    'Trung bình: ${average.toStringAsFixed(1)}',
                     style: TextStyle(
                       color: _gradeColor(average),
                       fontWeight: FontWeight.bold,
@@ -360,7 +366,6 @@ class _GradesScreenState extends State<GradesScreen> {
     final tx1TietController = TextEditingController(text: _joinScores(grade?.tx1tiet ?? const []));
     final giuaKyController = TextEditingController(text: grade?.giuaKy?.toString() ?? '');
     final cuoiKyController = TextEditingController(text: grade?.cuoiKy?.toString() ?? '');
-    final averageController = TextEditingController(text: grade?.average?.toString() ?? '');
 
     String? validateMultipleScores(String? value) {
       if (value == null || value.trim().isEmpty) return null;
@@ -391,29 +396,74 @@ class _GradesScreenState extends State<GradesScreen> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
+              title: Text('Điểm của ${student.name}'),
               content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                      controller: tx15Controller,
-                    ),
-                    const SizedBox(height: 12),
-                      controller: tx1TietController,
-                    ),
-                    const SizedBox(height: 12),
-                      controller: giuaKyController,
-                    ),
-                    const SizedBox(height: 12),
-                      controller: cuoiKyController,
-                    ),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: tx15Controller,
+                        decoration: const InputDecoration(
+                          labelText: 'Điểm 15 phút (cách nhau bởi dấu phẩy)',
+                          hintText: 'VD: 7, 8.5',
+                        ),
+                        keyboardType: TextInputType.text,
+                        validator: validateMultipleScores,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: tx1TietController,
+                        decoration: const InputDecoration(
+                          labelText: 'Điểm 1 tiết (cách nhau bởi dấu phẩy)',
+                          hintText: 'VD: 8, 9.5',
+                        ),
+                        keyboardType: TextInputType.text,
+                        validator: validateMultipleScores,
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: giuaKyController,
+                        decoration: const InputDecoration(labelText: 'Giữa kỳ'),
+                        keyboardType: TextInputType.text,
+                        validator: validateSingleScore,
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: cuoiKyController,
+                        decoration: const InputDecoration(labelText: 'Cuối kỳ'),
+                        keyboardType: TextInputType.text,
+                        validator: validateSingleScore,
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.info_outline, color: Colors.blue, size: 20),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Điểm trung bình hiện tại: ${grade?.average?.toStringAsFixed(1) ?? '--'}\nHệ thống sẽ tự động tính lại điểm trung bình sau khi lưu.',
+                                style: const TextStyle(fontSize: 13, color: Colors.blue, height: 1.4),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               actions: [
                 TextButton(
                   onPressed: isSaving ? null : () => Navigator.pop(dialogContext, false),
+                  child: const Text('Hủy'),
                 ),
                 ElevatedButton(
                   onPressed: isSaving
@@ -435,6 +485,7 @@ class _GradesScreenState extends State<GradesScreen> {
                               tx1tiet: _parseScores(tx1TietController.text),
                               giuaKy: _parseNullableDouble(giuaKyController.text),
                               cuoiKy: _parseNullableDouble(cuoiKyController.text),
+                              average: null, // Let backend calculate it
                             );
                             if (dialogContext.mounted) {
                               Navigator.pop(dialogContext, true);
@@ -464,7 +515,6 @@ class _GradesScreenState extends State<GradesScreen> {
     tx1TietController.dispose();
     giuaKyController.dispose();
     cuoiKyController.dispose();
-    averageController.dispose();
 
     if (saved == true) {
       _loadData();
