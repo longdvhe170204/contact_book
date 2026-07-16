@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/chat_list_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/chat_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/class_schedule_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/notification_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/profile_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/student_conduct_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/teacher_assignments_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/teacher_conduct_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/teacher_students_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/GradeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/StudentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/TeacherController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/TeacherGradeResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/TeacherGradeUpsertRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/GradeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/TeacherService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/GradeServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/TeacherServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/main.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,31 +63,36 @@
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "khuong",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/contact_book/contact_book/prm/lib/screen",
+    "last_opened_file_path": "D:/contact_book/contact_book/be-fschool/src/main/java/com/tinder/befschool/service/impl",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "show.migrate.to.gradle.popup": "false",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\contact_book\contact_book\prm\lib\screen" />
-      <recent name="D:\contact_book\contact_book\prm\lib\models" />
-      <recent name="D:\contact_book\contact_book\prm\lib\services" />
-      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\controller" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service\impl" />
       <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto" />
+      <recent name="D:\contact_book\contact_book\be-fschool\src\main\java\com\tinder\befschool\controller" />
+      <recent name="D:\contact_book\contact_book\prm\lib\screen" />
     </key>
   </component>
   <component name="RunManager">
