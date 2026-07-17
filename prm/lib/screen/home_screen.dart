@@ -211,7 +211,10 @@ class _HomeScreenState extends State<HomeScreen> {
         color: const Color(0xFF4CAF50),
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ClassScheduleScreen()),
+          MaterialPageRoute(builder: (context) => user.isTeacher
+              ? const ClassScheduleScreen()
+              : const StudentAttendanceScreen(),
+          ),
         ),
       ),
       _buildFeatureCard(

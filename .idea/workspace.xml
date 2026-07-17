@@ -4,7 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
+    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/contact_book.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/contact_book.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/SampleDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/SampleDataLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/CreateScheduleRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/CreateScheduleRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/LegacyScheduleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/LegacyScheduleResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/ScheduleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/ScheduleResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/UpdateScheduleRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/UpdateScheduleRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/AdminScheduleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/AdminScheduleServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/PrmCompatibilityServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/PrmCompatibilityServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/class_schedule_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/class_schedule_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/student_attendance_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/student_attendance_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/src/pages/admin/ScheduleManagement.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/src/pages/admin/ScheduleManagement.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,7 +41,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="425" />
+    <option name="cachedIndexableFilesCount" value="439" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,31 +88,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "long",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Prm/contact_book/be-fschool/src/main/java/com/tinder/befschool/service",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "D:\\JAVA\\IntelliJ IDEA 2025.3.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;long&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Prm/contact_book/be-fschool/src/main/java/com/tinder/befschool/service&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\JAVA\\IntelliJ IDEA 2025.3.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
@@ -138,6 +163,12 @@
       <workItem from="1784123852349" duration="4604000" />
       <workItem from="1784171676338" duration="1523000" />
       <workItem from="1784185915084" duration="4697000" />
+      <workItem from="1784217044985" duration="783000" />
+      <workItem from="1784218104333" duration="3237000" />
+      <workItem from="1784253223331" duration="2864000" />
+      <workItem from="1784257588481" duration="3117000" />
+      <workItem from="1784305190565" duration="101000" />
+      <workItem from="1784307460082" duration="3366000" />
     </task>
     <servers />
   </component>
