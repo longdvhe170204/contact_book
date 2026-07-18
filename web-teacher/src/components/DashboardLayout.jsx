@@ -70,7 +70,8 @@ const DashboardLayout = () => {
           <SidebarItem to="/notifications" icon={Bell} label="Gửi Thông báo" />
           <SidebarItem to="/classes" icon={Layers} label="Quản lý Lớp học" />
           <SidebarItem to="/schedule" icon={Calendar} label="Xếp Thời khóa biểu" />
-          <SidebarItem to="/grades" icon={Target} label="Báo cáo Điểm & Điểm danh" />
+          <SidebarItem to="/grades" icon={Target} label="Báo cáo Điểm số" />
+          <SidebarItem to="/attendance" icon={UserCheck} label="Báo cáo Điểm danh" />
           <SidebarItem to="/finance" icon={DollarSign} label="Quản lý Thu/Chi" />
         </nav>
 
