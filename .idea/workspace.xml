@@ -4,32 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/contact_book.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/contact_book.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/SampleDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/SampleDataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/CreateScheduleRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/CreateScheduleRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/LegacyScheduleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/LegacyScheduleResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/ScheduleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/ScheduleResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/UpdateScheduleRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/dto/schedule/UpdateScheduleRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/AdminScheduleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/AdminScheduleServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/PrmCompatibilityServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/PrmCompatibilityServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/screen/class_schedule_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/class_schedule_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/screen/student_attendance_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/student_attendance_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/_metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-teacher/src/pages/admin/ScheduleManagement.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/src/pages/admin/ScheduleManagement.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -169,6 +144,7 @@
       <workItem from="1784257588481" duration="3117000" />
       <workItem from="1784305190565" duration="101000" />
       <workItem from="1784307460082" duration="3366000" />
+      <workItem from="1784384315526" duration="350000" />
     </task>
     <servers />
   </component>
