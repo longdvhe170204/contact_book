@@ -26,6 +26,31 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
 
   final List<String> _weekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 
+  String _formatPeriod(String? period) {
+    final value = period?.trim() ?? '';
+
+    if (value.isEmpty) {
+      return 'Chưa có tiết';
+    }
+
+    final lower = value.toLowerCase();
+
+    if (lower.startsWith('tiết')) {
+      return value;
+    }
+
+    if (lower.startsWith('tiet')) {
+      final number = value.replaceFirst(
+        RegExp(r'^tiet\s*', caseSensitive: false),
+        '',
+      );
+
+      return 'Tiết $number';
+    }
+
+    return 'Tiết $value';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -199,10 +224,10 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.assignment_turned_in, color: Colors.white, size: 24),
+                    Icon(Icons.calendar_today, color: Colors.white, size: 24),
                     SizedBox(width: 12),
                     Text(
-                      'Chuyên cần',
+                      'Thoi Khoa Bieu',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -383,7 +408,7 @@ class _StudentAttendanceScreenState extends State<StudentAttendanceScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    schedule.period,
+                    _formatPeriod(schedule.period),
                     style: const TextStyle(
                       color: Color(0xFF1976D2),
                       fontWeight: FontWeight.bold,

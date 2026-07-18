@@ -111,12 +111,12 @@ public class PrmCompatibilityServiceImpl implements PrmCompatibilityService {
         if (prmDay == null || prmDay < 0 || prmDay > 6) {
             throw new ApiException("Ngày trong tuần của PRM phải nằm trong khoảng 0..6");
         }
-        return prmDay + 2;
+        return prmDay;
     }
 
     private int toPrmDay(Integer storedDay) {
         if (storedDay == null) return 0;
-        if (storedDay >= 2 && storedDay <= 8) return storedDay - 2;
+        if (storedDay >= 2 && storedDay <= 8) return storedDay;
         // Backward compatibility for legacy rows already stored as 0..6.
         if (storedDay >= 0 && storedDay <= 6) return storedDay;
         return 0;
