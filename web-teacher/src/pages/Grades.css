@@ -1,0 +1,171 @@
+.grades-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.filters-card {
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.filters-group {
+  display: flex;
+  gap: 16px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-main);
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.filter-item select {
+  background: none;
+  border: none;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.grades-container {
+  padding: 0;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.grades-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.grades-table th {
+  background-color: var(--primary-soft);
+  padding: 18px 24px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.grades-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.grades-table tr:last-child td {
+  border-bottom: none;
+}
+
+.grades-table tr:hover {
+  background-color: rgba(99, 102, 241, 0.05);
+}
+
+.student-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.mini-avatar {
+  width: 36px;
+  height: 36px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.subject-badge {
+  background: var(--bg-main);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.avg-cell {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.edit-btn {
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.edit-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Modal specific for preview */
+.preview-info {
+  margin-bottom: 24px;
+  color: var(--text-muted);
+}
+
+.preview-table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.preview-table th, .preview-table td {
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.preview-table th {
+  background: var(--bg-main);
+  position: sticky;
+  top: 0;
+}
+
+.more-rows {
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.modal-actions {
+  margin-top: 24px;
+}
