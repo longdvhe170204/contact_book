@@ -4,11 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
+    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/.dart_tool/package_graph.json" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/package_graph.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/main_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/main_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/prm/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/prm/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/prm/windows/flutter/generated_plugins.cmake" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="CopilotPersistence">
     <persistenceIdMap>
@@ -74,7 +95,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "copilot.chat.legacySessionMetadata.migrated": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "long",
+    "git-widget-placeholder": "quoc",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Prm/contact_book/be-fschool/src/main/java/com/tinder/befschool/service",
@@ -97,7 +118,7 @@
       <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto\schedule" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BeFschoolApplication">
+  <component name="RunManager">
     <configuration name="BeFschoolApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="be-fschool" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.tinder.befschool.BeFschoolApplication" />
