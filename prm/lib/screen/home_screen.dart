@@ -14,6 +14,7 @@ import 'teacher_attendance_screen.dart';
 import 'teacher_conduct_screen.dart';
 import 'teacher_students_screen.dart';
 import 'chat_list_screen.dart';
+import 'student_attendent_report.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -211,7 +212,10 @@ class _HomeScreenState extends State<HomeScreen> {
         color: const Color(0xFF4CAF50),
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ClassScheduleScreen()),
+          MaterialPageRoute(builder: (context) => user.isTeacher
+              ? const ClassScheduleScreen()
+              : const StudentAttendanceScreen(),
+          ),
         ),
       ),
       _buildFeatureCard(
@@ -259,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       _buildFeatureCard(
-        title: user.isTeacher ? 'Diem danh lop' : 'Diem danh',
+        title: user.isTeacher ? 'Diem danh lop' : 'Diem danh Report',
         icon: Icons.check_circle_outline,
         color: const Color(0xFF00BCD4),
         onTap: () => Navigator.push(
@@ -267,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
           MaterialPageRoute(
             builder: (context) => user.isTeacher
                 ? const TeacherAttendanceScreen()
-                : const StudentAttendanceScreen(),
+                : const StudentAttendanceReportScreen(),
           ),
         ),
       ),

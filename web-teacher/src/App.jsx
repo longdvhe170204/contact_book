@@ -5,6 +5,8 @@ import DashboardLayout from './components/DashboardLayout';
 import Students from './pages/Students';
 import ClassManagement from './pages/admin/ClassManagement';
 import ScheduleManagement from './pages/admin/ScheduleManagement';
+import Grades from './pages/Grades';
+import Attendance from './pages/Attendance';
 
 // Member 1 Pages
 import Teachers from './pages/Teachers';
@@ -94,7 +96,8 @@ function App() {
               <Route path="notifications" element={<Notifications />} />
                 <Route path="classes" element={<ClassManagement />} />
               <Route path="schedule" element={<ScheduleManagement />} />
-              <Route path="grades" element={<ReportsPlaceholder />} />
+              <Route path="grades" element={<Grades />} />
+              <Route path="attendance" element={<Attendance />} />
               <Route path="finance" element={<FinancePlaceholder />} />
             </Route>
 
