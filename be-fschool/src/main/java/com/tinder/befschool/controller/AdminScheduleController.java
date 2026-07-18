@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/schedules")
-@PreAuthorize("hasRole('TEACHER')") // Sau này đổi thành ADMIN.
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminScheduleController {
     private final AdminScheduleService service;
 

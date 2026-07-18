@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('TEACHER')") // Sau này đổi thành ADMIN.
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     private final UserRepository userRepository;
@@ -212,5 +212,56 @@ public class AdminController {
 
         User saved = userRepository.save(student);
         return ResponseEntity.ok(new ApiResponse<>(true, saved, "Thêm học sinh thành công"));
+    }
+
+    @PostMapping("/teachers")
+    public ResponseEntity<ApiResponse<User>> addTeacher(@RequestBody User teacher) {
+        if (userRepository.existsByPhoneNumber(teacher.getPhoneNumber())) {
+            throw new RuntimeException("Số điện thoại đã tồn tại trên hệ thống");
+        }
+        Role teacherRole = roleRepository.findByName(RoleName.TEACHER)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy vai trò TEACHER"));
+        
+        teacher.setRoles(Collections.singleton(teacherRole));
+        teacher.setRoleId(2L); // 1 = STUDENT, 2 = TEACHER
+        
+        String rawPw = teacher.getPassword();
+        if (rawPw == null || rawPw.isBlank()) {
+            rawPw = "123456";
+        }
+        teacher.setPassword(passwordEncoder.encode(rawPw));
+
+        User saved = userRepository.save(teacher);
+        return ResponseEntity.ok(new ApiResponse<>(true, saved, "Thêm giáo viên thành công"));
+    }
+
+    @PutMapping("/teachers/{id}")
+    public ResponseEntity<ApiResponse<User>> updateTeacher(@PathVariable Long id, @RequestBody User teacherDetails) {
+        User teacher = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy giáo viên"));
+                
+        if (teacherDetails.getName() != null) teacher.setName(teacherDetails.getName());
+        if (teacherDetails.getEmail() != null) teacher.setEmail(teacherDetails.getEmail());
+        if (teacherDetails.getSubject() != null) teacher.setSubject(teacherDetails.getSubject());
+        if (teacherDetails.getEmployeeCode() != null) teacher.setEmployeeCode(teacherDetails.getEmployeeCode());
+        if (teacherDetails.getAddress() != null) teacher.setAddress(teacherDetails.getAddress());
+        
+        if (teacherDetails.getPhoneNumber() != null && !teacherDetails.getPhoneNumber().equals(teacher.getPhoneNumber())) {
+            if (userRepository.existsByPhoneNumber(teacherDetails.getPhoneNumber())) {
+                throw new RuntimeException("Số điện thoại đã tồn tại trên hệ thống");
+            }
+            teacher.setPhoneNumber(teacherDetails.getPhoneNumber());
+        }
+
+        User updated = userRepository.save(teacher);
+        return ResponseEntity.ok(new ApiResponse<>(true, updated, "Cập nhật giáo viên thành công"));
+    }
+
+    @DeleteMapping("/teachers/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteTeacher(@PathVariable Long id) {
+        User teacher = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy giáo viên"));
+        userRepository.delete(teacher);
+        return ResponseEntity.ok(new ApiResponse<>(true, null, "Xóa giáo viên thành công"));
     }
 }

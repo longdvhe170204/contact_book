@@ -11,11 +11,22 @@ import '../models/conduct.dart';
 import '../models/chat_message.dart';
 import 'storage_service.dart';
 
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 class ApiService {
-  // TODO: Thay đổi baseUrl khi deploy
-  static const String baseUrl = 'http://localhost:8080/api';
-  // Khi test trên thiết bị thật: 'http://YOUR_IP:8080/api'
-  // Khi deploy production: 'https://your-domain.com/api'
+  // Tự động nhận diện nền tảng để đổi baseUrl
+  static String get baseUrl {
+    if (kIsWeb) {
+      return 'http://localhost:8080/api';
+    } else if (Platform.isAndroid) {
+      // 10.0.2.2 là địa chỉ IP đặc biệt của Android Emulator để trỏ về localhost của máy tính
+      return 'http://10.0.2.2:8080/api';
+    } else {
+      // Dành cho iOS Simulator hoặc Windows/macOS Desktop app
+      return 'http://localhost:8080/api';
+    }
+  }
 
   // Common headers
   static Future<Map<String, String>> _getHeaders() async {

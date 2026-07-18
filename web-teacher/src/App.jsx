@@ -6,25 +6,15 @@ import Students from './pages/Students';
 import ClassManagement from './pages/admin/ClassManagement';
 import ScheduleManagement from './pages/admin/ScheduleManagement';
 
+// Member 1 Pages
+import Teachers from './pages/Teachers';
+import Notifications from './pages/Notifications';
+
 // Member 5 Pages
 import Dashboard from './pages/Dashboard';
 import ImportExcel from './pages/ImportExcel';
 
 // Placeholders for other members' screens
-const TeachersPlaceholder = () => (
-  <div className="card fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
-    <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px' }}>Quản lý Giáo viên</h3>
-    <p style={{ color: 'var(--text-muted)' }}>Màn hình Quản lý Giáo viên của Thành viên 1. Đang phát triển...</p>
-  </div>
-);
-
-const NotificationsPlaceholder = () => (
-  <div className="card fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
-    <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px' }}>Gửi Thông báo</h3>
-    <p style={{ color: 'var(--text-muted)' }}>Màn hình Gửi Thông báo của Thành viên 1. Đang phát triển...</p>
-  </div>
-);
-
 const ScheduleMakerPlaceholder = () => (
   <div className="card fade-in" style={{ padding: '28px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)' }}>
     <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px' }}>Xếp Thời khóa biểu</h3>
@@ -99,9 +89,9 @@ function App() {
               <Route path="import-excel" element={<ImportExcel />} />
               <Route path="students" element={<Students />} />
 
-              {/* Other members' routes linked to placeholders */}
-              <Route path="teachers" element={<TeachersPlaceholder />} />
-              <Route path="notifications" element={<NotificationsPlaceholder />} />
+              {/* Member 1's routes */}
+              <Route path="teachers" element={<Teachers />} />
+              <Route path="notifications" element={<Notifications />} />
                 <Route path="classes" element={<ClassManagement />} />
               <Route path="schedule" element={<ScheduleManagement />} />
               <Route path="grades" element={<ReportsPlaceholder />} />

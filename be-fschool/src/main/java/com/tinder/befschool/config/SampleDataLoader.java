@@ -34,6 +34,7 @@ public class SampleDataLoader {
         return args -> {
             Role studentRole = ensureRole(roleRepository, RoleName.STUDENT, "Student account");
             Role teacherRole = ensureRole(roleRepository, RoleName.TEACHER, "Teacher account");
+            Role adminRole = ensureRole(roleRepository, RoleName.ADMIN, "Admin account");
 
             if (subjectRepository.count() == 0) {
                 List<String> subjectNames = List.of("Toán", "Văn", "Anh Văn", "Vật Lý", "Hóa Học",
@@ -61,7 +62,8 @@ public class SampleDataLoader {
                         createTeacher("GV. Z", "0200000008", "Địa Lý", "T008", teacherRole),
                         createTeacher("GV. Sport", "0200000009", "Thể Dục", "T009", teacherRole),
                         createTeacher("GV. Tech", "0200000010", "Tin Học", "T010", teacherRole),
-                        createTeacher("GV. Moral", "0200000011", "GDCD", "T011", teacherRole)
+                        createTeacher("GV. Moral", "0200000011", "GDCD", "T011", teacherRole),
+                        createAdmin("Admin Hệ Thống", "0999999999", "admin@fschool.edu.vn", adminRole)
                 );
                 initialUsers.forEach(user -> user.setPassword(passwordEncoder.encode(user.getPassword())));
                 userRepository.saveAll(initialUsers);
@@ -227,6 +229,17 @@ public class SampleDataLoader {
         user.setEmployeeCode(employeeCode);
         user.setRoles(Collections.singleton(role));
         user.setRoleId(2L);
+        user.setPassword("123456");
+        return user;
+    }
+
+    private User createAdmin(String name, String phoneNumber, String email, Role role) {
+        User user = new User();
+        user.setName(name);
+        user.setPhoneNumber(phoneNumber);
+        user.setEmail(email);
+        user.setRoles(Collections.singleton(role));
+        user.setRoleId(3L);
         user.setPassword("123456");
         return user;
     }
