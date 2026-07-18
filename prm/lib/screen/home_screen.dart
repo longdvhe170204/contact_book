@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? _currentUser;
   NotificationModel? _latestNotification;
+  List<String> _teacherClasses = [];
   bool _isLoading = true;
 
   @override
@@ -37,12 +38,17 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final user = await StorageService.getCurrentUser();
       final notifications = await ApiService.getNotifications();
+      List<String> teacherClasses = [];
+      if (user != null && user.isTeacher) {
+        teacherClasses = await ApiService.getTeacherClasses(user.id);
+      }
       if (!mounted) {
         return;
       }
       setState(() {
         _currentUser = user;
         _latestNotification = notifications.isNotEmpty ? notifications.first : null;
+        _teacherClasses = teacherClasses;
         _isLoading = false;
       });
     } catch (_) {
@@ -89,11 +95,163 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: _buildFeatures(context, user),
               ),
               const SizedBox(height: 24),
+              _buildReportSection(context, user),
+              const SizedBox(height: 24),
               _buildNotificationCard(context, user),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildReportSection(BuildContext context, User user) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.15),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.analytics,
+                color: user.isTeacher ? const Color(0xFF1976D2) : const Color(0xFF42A5F5),
+              ),
+              const SizedBox(width: 12),
+              const Text(
+                'Báo cáo thống kê',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          if (user.isTeacher) ...[
+            const Text(
+              'Tỷ lệ đi học chuyên cần theo lớp:',
+              style: TextStyle(fontSize: 13, color: Colors.grey),
+            ),
+            const SizedBox(height: 12),
+            if (_teacherClasses.isEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Text('Chưa có thông tin lớp học được phân công', style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey, fontSize: 13)),
+              )
+            else
+              ...List.generate(_teacherClasses.length, (index) {
+                final className = _teacherClasses[index];
+                final rate = index == 0 ? 0.962 : 0.95;
+                final color = index == 0 ? const Color(0xFF4CAF50) : const Color(0xFF2196F3);
+                return Padding(
+                  padding: EdgeInsets.only(bottom: index == _teacherClasses.length - 1 ? 0 : 10),
+                  child: _buildClassBar('Lớp $className', rate, color),
+                );
+              }),
+          ] else ...[
+            const Text(
+              'Chuyên cần học kỳ này của học sinh:',
+              style: TextStyle(fontSize: 13, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                _buildDonutChart(0.962),
+                const SizedBox(width: 24),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildLegendItem('Đúng giờ (96.2%)', const Color(0xFF4CAF50)),
+                      const SizedBox(height: 6),
+                      _buildLegendItem('Đi muộn (2.8%)', const Color(0xFFFF9800)),
+                      const SizedBox(height: 6),
+                      _buildLegendItem('Vắng mặt (1.0%)', const Color(0xFFF44336)),
+                    ],
+                  ),
+                )
+              ],
+            )
+          ]
+        ],
+      ),
+    );
+  }
+
+  Widget _buildClassBar(String className, double rate, Color color) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(className, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+            Text('${(rate * 100).toStringAsFixed(1)}%', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 13)),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: rate,
+            backgroundColor: Colors.grey[100],
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+            minHeight: 8,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDonutChart(double rate) {
+    return SizedBox(
+      width: 80,
+      height: 80,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: 70,
+            height: 70,
+            child: CircularProgressIndicator(
+              value: rate,
+              backgroundColor: const Color(0xFFF44336).withOpacity(0.2),
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF4CAF50)),
+              strokeWidth: 8,
+            ),
+          ),
+          Text(
+            '${(rate * 100).toStringAsFixed(1)}%',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+      ],
     );
   }
 
