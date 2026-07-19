@@ -13,7 +13,7 @@ import 'storage_service.dart';
 
 class ApiService {
   // TODO: Thay đổi baseUrl khi deploy
-  static const String baseUrl = 'http://10.0.2.2:8080/api'; // Sử dụng 10.0.2.2 cho máy ảo Android
+  static const String baseUrl = 'http://localhost:8080/api'; // Sử dụng 10.0.2.2 cho máy ảo Android
   // Khi test trên thiết bị thật: 'http://YOUR_IP:8080/api'
   // Khi deploy production: 'https://your-domain.com/api'
 
