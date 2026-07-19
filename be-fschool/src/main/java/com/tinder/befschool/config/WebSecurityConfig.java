@@ -72,6 +72,8 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/ws/**").permitAll()
                                 .requestMatchers("/error").permitAll()
+                                .requestMatchers("/api/files/**").permitAll()
+                                .requestMatchers("/uploads/**").permitAll()
                                 .requestMatchers("/api/payments/vnpay/return").permitAll()
                                 .anyRequest().authenticated()
                 )

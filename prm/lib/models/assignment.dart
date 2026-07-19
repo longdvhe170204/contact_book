@@ -8,6 +8,7 @@ class Assignment {
   final int? teacherId;
   final String dueDate;
   final String createdAt;
+  final String? fileUrl;
 
   Assignment({
     required this.id,
@@ -19,6 +20,7 @@ class Assignment {
     this.teacherId,
     required this.dueDate,
     required this.createdAt,
+    this.fileUrl,
   });
 
   factory Assignment.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class Assignment {
       teacherId: json['teacherId'] as int?,
       dueDate: json['dueDate'] ?? '',
       createdAt: json['createdAtCustom'] ?? json['createdAt'] ?? '',
+      fileUrl: json['fileUrl'],
     );
   }
 
@@ -46,6 +49,7 @@ class Assignment {
       'teacherId': teacherId,
       'dueDate': dueDate,
       'createdAt': createdAt,
+      'fileUrl': fileUrl,
     };
   }
 }

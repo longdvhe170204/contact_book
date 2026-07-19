@@ -52,7 +52,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="439" />
+    <option name="cachedIndexableFilesCount" value="425" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -158,15 +158,15 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28539.54" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28539.54" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
-      <created>1783846191165</created>
+      <changelist id="3406fb94-dfd7-43ef-9c11-e877e4862c0e" name="Changes" comment="" />
+      <created>1782713674414</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1783846191165</updated>

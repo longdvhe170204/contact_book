@@ -377,6 +377,7 @@ class ApiService {
         required String title,
         required String description,
         required String dueDate,
+        String? fileUrl,
       }) async {
     try {
       final response = await http.post(
@@ -388,6 +389,7 @@ class ApiService {
           'title': title,
           'description': description,
           'dueDate': dueDate,
+          'fileUrl': fileUrl,
         }),
       );
 
@@ -397,6 +399,79 @@ class ApiService {
       throw Exception('Failed to create assignment: $e');
     }
   }
+
+  static Future<Assignment> updateTeacherAssignment(
+      int id, {
+        required String className,
+        required String subject,
+        required String title,
+        required String description,
+        required String dueDate,
+        String? fileUrl,
+      }) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/assignments/$id'),
+        headers: await _getHeaders(),
+        body: json.encode({
+          'className': className,
+          'subject': subject,
+          'title': title,
+          'description': description,
+          'dueDate': dueDate,
+          'fileUrl': fileUrl,
+        }),
+      );
+      final data = _handleResponse(response);
+      return Assignment.fromJson(_extractData(data) as Map<String, dynamic>);
+    } catch (e) {
+      throw Exception('Failed to update assignment: $e');
+    }
+  }
+
+  static Future<void> deleteTeacherAssignment(int id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseUrl/assignments/$id'),
+        headers: await _getHeaders(),
+      );
+      _handleResponse(response);
+    } catch (e) {
+      throw Exception('Failed to delete assignment: $e');
+    }
+  }
+
+  static Future<String> uploadFile(List<int> fileBytes, String fileName) async {
+    try {
+      final token = await StorageService.getToken();
+      final uri = Uri.parse('$baseUrl/upload');
+      final request = http.MultipartRequest('POST', uri);
+
+      if (token != null) {
+        request.headers['Authorization'] = 'Bearer $token';
+      }
+
+      final multipartFile = http.MultipartFile.fromBytes(
+        'file',
+        fileBytes,
+        filename: fileName,
+      );
+      request.files.add(multipartFile);
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      final data = _handleResponse(response);
+      final extracted = _extractData(data);
+      if (extracted != null && extracted is Map && extracted.containsKey('fileUrl')) {
+        return extracted['fileUrl'].toString();
+      }
+      throw Exception('File URL not found in response');
+    } catch (e) {
+      throw Exception('Failed to upload file: $e');
+    }
+  }
+
 
   // ==================== ATTENDANCE ====================
 
