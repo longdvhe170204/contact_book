@@ -1,5 +1,7 @@
 package com.tinder.befschool.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -156,6 +158,7 @@ public class User extends Auditable {
         this.employeeCode = employeeCode;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

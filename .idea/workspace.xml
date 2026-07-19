@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSocketConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/AssignmentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/AttendanceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ChatMessageRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ConductRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/GradeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/NotificationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/RoleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/ScheduleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/SubjectRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/be-fschool/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/Prm/contact_book" value="3GOcjSTDJJy6Q5eEwwnpHcFjAhZ" />
+    </persistenceIdMap>
+  </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="3" />
+    <option name="cachedIndexableFilesCount" value="439" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -53,6 +47,24 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="3GOcjSTDJJy6Q5eEwwnpHcFjAhZ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="BACKGROUND" />
+        <option name="worktreeMode" value="WORKSPACE" />
+      </template>
+    </option>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -63,29 +75,40 @@
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "develop",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "dang",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Prm/contact_book/be-fschool/src/main/java/com/tinder/befschool/repository",
+    "last_opened_file_path": "T:/Flutter/prj_prm/gitProject/contact_book",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "show.migrate.to.gradle.popup": "false",
     "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "D:\\JAVA\\IntelliJ IDEA 2025.3.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
+      <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\service\impl" />
       <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\repository" />
-      <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\config" />
+      <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\controller" />
+      <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\dto\schedule" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BeFschoolApplication">
+  <component name="RunManager">
     <configuration name="BeFschoolApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="be-fschool" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.tinder.befschool.BeFschoolApplication" />
@@ -118,6 +141,21 @@
       <option name="presentableId" value="Default" />
       <updated>1783846191165</updated>
       <workItem from="1783846192437" duration="1557000" />
+      <workItem from="1784046923513" duration="2887000" />
+      <workItem from="1784077156799" duration="4083000" />
+      <workItem from="1784085071780" duration="29000" />
+      <workItem from="1784103744927" duration="15000" />
+      <workItem from="1784105050709" duration="4493000" />
+      <workItem from="1784123852349" duration="4604000" />
+      <workItem from="1784171676338" duration="1523000" />
+      <workItem from="1784185915084" duration="4697000" />
+      <workItem from="1784217044985" duration="783000" />
+      <workItem from="1784218104333" duration="3237000" />
+      <workItem from="1784253223331" duration="2864000" />
+      <workItem from="1784257588481" duration="3117000" />
+      <workItem from="1784305190565" duration="101000" />
+      <workItem from="1784307460082" duration="3366000" />
+      <workItem from="1784384315526" duration="350000" />
     </task>
     <servers />
   </component>

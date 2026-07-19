@@ -2,224 +2,711 @@ package com.tinder.befschool.config;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tinder.befschool.entity.*;
-import com.tinder.befschool.repository.*;
+import com.tinder.befschool.entity.Assignment;
+import com.tinder.befschool.entity.Grade;
+import com.tinder.befschool.entity.Invoice;
+import com.tinder.befschool.entity.Notification;
+import com.tinder.befschool.entity.Role;
+import com.tinder.befschool.entity.RoleName;
+import com.tinder.befschool.entity.Schedule;
+import com.tinder.befschool.entity.SchoolClass;
+import com.tinder.befschool.entity.SchoolClassStatus;
+import com.tinder.befschool.entity.Subject;
+import com.tinder.befschool.entity.User;
+import com.tinder.befschool.repository.AssignmentRepository;
+import com.tinder.befschool.repository.GradeRepository;
+import com.tinder.befschool.repository.InvoiceRepository;
+import com.tinder.befschool.repository.NotificationRepository;
+import com.tinder.befschool.repository.RoleRepository;
+import com.tinder.befschool.repository.ScheduleRepository;
+import com.tinder.befschool.repository.SchoolClassRepository;
+import com.tinder.befschool.repository.SubjectRepository;
+import com.tinder.befschool.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Configuration
 public class SampleDataLoader {
 
+    private static final String DEFAULT_PASSWORD = "123456";
+    private static final String DEFAULT_SCHOOL_YEAR = "2026-2027";
+    private static final int DEFAULT_SEMESTER = 1;
+    private static final int DEFAULT_MAXIMUM_STUDENTS = 45;
+    private static final String NOT_APPLICABLE = "Không áp dụng";
+
+    private record PeriodTime(String startTime, String endTime) {
+    }
+
+    private static final Map<String, PeriodTime> PERIOD_TIMES = Map.ofEntries(
+            Map.entry("1", new PeriodTime("07:00", "07:45")),
+            Map.entry("2", new PeriodTime("07:50", "08:35")),
+            Map.entry("3", new PeriodTime("08:50", "09:35")),
+            Map.entry("4", new PeriodTime("09:40", "10:25")),
+            Map.entry("5", new PeriodTime("10:30", "11:15")),
+            Map.entry("6", new PeriodTime("13:00", "13:45")),
+            Map.entry("7", new PeriodTime("13:50", "14:35")),
+            Map.entry("8", new PeriodTime("14:50", "15:35")),
+            Map.entry("9", new PeriodTime("15:40", "16:25")),
+            Map.entry("10", new PeriodTime("16:30", "17:15"))
+    );
+
     @Bean
-    CommandLineRunner runner(UserRepository userRepository,
-                             RoleRepository roleRepository,
-                             GradeRepository gradeRepository,
-                             ScheduleRepository scheduleRepository,
-                             NotificationRepository notificationRepository,
-                             AssignmentRepository assignmentRepository,
-                             ObjectMapper objectMapper,
-                             PasswordEncoder passwordEncoder) {
+    CommandLineRunner runner(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            GradeRepository gradeRepository,
+            ScheduleRepository scheduleRepository,
+            NotificationRepository notificationRepository,
+            AssignmentRepository assignmentRepository,
+            SubjectRepository subjectRepository,
+            SchoolClassRepository schoolClassRepository,
+            InvoiceRepository invoiceRepository,
+            ObjectMapper objectMapper,
+            PasswordEncoder passwordEncoder
+    ) {
         return args -> {
-            Role studentRole = ensureRole(roleRepository, RoleName.STUDENT, "Student account");
-            Role teacherRole = ensureRole(roleRepository, RoleName.TEACHER, "Teacher account");
+            Role studentRole = ensureRole(
+                    roleRepository,
+                    RoleName.STUDENT,
+                    "Tài khoản học sinh"
+            );
 
-            if (userRepository.count() == 0) {
-                userRepository.saveAll(List.of(
-                        createStudent("Nguyễn Văn A", "0123456789", "10A1", "a@example.com", LocalDate.of(2008, 1, 1), studentRole),
-                        createStudent("Trần Thị B", "0987654321", "10A1", "b@example.com", LocalDate.of(2008, 2, 2), studentRole),
-                        createStudent("Lê Văn C", "0111222333", "10A2", "c@example.com", LocalDate.of(2008, 3, 3), studentRole),
-                        createTeacher("GV. Nguyễn Văn A", "0200000001", "Toán", "T001", teacherRole),
-                        createTeacher("GV. Trần Thị B", "0200000002", "Văn", "T002", teacherRole),
-                        createTeacher("GV. Lê Văn C", "0200000003", "Anh Văn", "T003", teacherRole),
-                        createTeacher("GV. Nguyễn Văn D", "0200000004", "Vật Lý", "T004", teacherRole),
-                        createTeacher("GV. Trần Thị E", "0200000005", "Hóa Học", "T005", teacherRole),
-                        createTeacher("GV. X", "0200000006", "Sinh Học", "T006", teacherRole),
-                        createTeacher("GV. Y", "0200000007", "Lịch Sử", "T007", teacherRole),
-                        createTeacher("GV. Z", "0200000008", "Địa Lý", "T008", teacherRole),
-                        createTeacher("GV. Sport", "0200000009", "Thể Dục", "T009", teacherRole),
-                        createTeacher("GV. Tech", "0200000010", "Tin Học", "T010", teacherRole),
-                        createTeacher("GV. Moral", "0200000011", "GDCD", "T011", teacherRole)
-                ));
-            } else {
-                // Migration: Ensure existing users have roles and encrypted password
-                userRepository.findAll().forEach(user -> {
-                    boolean updated = false;
-                    if (user.getRoles() == null || user.getRoles().isEmpty()) {
-                        if (user.getPhoneNumber() != null && user.getPhoneNumber().startsWith("02")) {
-                            user.setRoles(Collections.singleton(teacherRole));
-                        } else {
-                            user.setRoles(Collections.singleton(studentRole));
-                        }
-                        updated = true;
-                    }
+            Role teacherRole = ensureRole(
+                    roleRepository,
+                    RoleName.TEACHER,
+                    "Tài khoản giáo viên"
+            );
 
-                    if (user.getRoleId() == null) {
-                        if (user.getPhoneNumber() != null && user.getPhoneNumber().startsWith("02")) {
-                            user.setRoleId(2L);
-                        } else {
-                            user.setRoleId(1L);
-                        }
-                        updated = true;
-                    }
-                    
-                    // Encrypt if password is null or plain text '123456' or doesn't look like BCrypt
-                    String currentPw = user.getPassword();
-                    if (currentPw == null || currentPw.isEmpty() || currentPw.equals("123456") || !currentPw.startsWith("$2a$")) {
-                        user.setPassword(passwordEncoder.encode(currentPw == null || currentPw.isEmpty() ? "123456" : currentPw));
-                        updated = true;
-                    }
+            ensureSubjects(subjectRepository);
+            ensureUsers(userRepository, studentRole, teacherRole, passwordEncoder);
 
-                    if (updated) {
-                        userRepository.save(user);
-                    }
-                });
-            }
+            Map<String, User> studentsByPhone = userRepository
+                    .findByRoles_NameOrderByNameAsc(RoleName.STUDENT)
+                    .stream()
+                    .collect(Collectors.toMap(
+                            User::getPhoneNumber,
+                            Function.identity(),
+                            (first, second) -> first
+                    ));
 
-            Map<String, User> studentsByPhone = userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT).stream()
-                    .collect(Collectors.toMap(User::getPhoneNumber, Function.identity()));
-            Map<String, User> teachersByName = userRepository.findByRoles_NameOrderByNameAsc(RoleName.TEACHER).stream()
-                    .collect(Collectors.toMap(User::getName, Function.identity()));
+            Map<String, User> teachersByName = userRepository
+                    .findByRoles_NameOrderByNameAsc(RoleName.TEACHER)
+                    .stream()
+                    .collect(Collectors.toMap(
+                            User::getName,
+                            Function.identity(),
+                            (first, second) -> first
+                    ));
 
-            User studentA = studentsByPhone.get("0123456789");
+            Map<String, Subject> subjectsByName = subjectRepository
+                    .findAll()
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Subject::getName,
+                            Function.identity(),
+                            (first, second) -> first
+                    ));
 
-            if (gradeRepository.count() == 0 && studentA != null) {
-                String[] subjects = {"Toán", "Văn", "Anh Văn", "Vật Lý", "Hóa Học", "Sinh Học", "Lịch Sử", "Địa Lý", "Thể Dục", "Tin Học"};
-                for (String subject : subjects) {
-                    Grade grade = new Grade();
-                    grade.setStudentId(studentA.getId());
-                    grade.setClassName(studentA.getClassName());
-                    grade.setTeacherId(resolveTeacherId(teachersByName, subject));
-                    grade.setSemester(1);
-                    grade.setSubject(subject);
-                    try {
-                        if (subject.equals("Toán")) {
-                            grade.setTx15(objectMapper.writeValueAsString(List.of(8.5, 9.0, 7.5)));
-                            grade.setTx1tiet(objectMapper.writeValueAsString(List.of(8.0, 8.5)));
-                            grade.setGiuaKy(8.5);
-                            grade.setCuoiKy(9.0);
-                            grade.setAverage(8.5);
-                        } else if (subject.equals("Văn")) {
-                            grade.setTx15(objectMapper.writeValueAsString(List.of(8.0, 7.5, 8.5)));
-                            grade.setTx1tiet(objectMapper.writeValueAsString(List.of(8.0, 7.5)));
-                            grade.setGiuaKy(8.0);
-                            grade.setCuoiKy(8.5);
-                            grade.setAverage(8.1);
-                        } else if (subject.equals("Anh Văn")) {
-                            grade.setTx15(objectMapper.writeValueAsString(List.of(9.0, 9.5, 9.0)));
-                            grade.setTx1tiet(objectMapper.writeValueAsString(List.of(9.0, 9.5)));
-                            grade.setGiuaKy(9.0);
-                            grade.setCuoiKy(9.5);
-                            grade.setAverage(9.2);
-                        } else {
-                            grade.setTx15(objectMapper.writeValueAsString(List.of(8.0, 8.0, 8.0)));
-                            grade.setTx1tiet(objectMapper.writeValueAsString(List.of(8.0, 8.0)));
-                            grade.setGiuaKy(8.0);
-                            grade.setCuoiKy(8.0);
-                            grade.setAverage(8.0);
-                        }
-                    } catch (JsonProcessingException ignored) {
-                    }
-                    gradeRepository.save(grade);
-                }
-            }
+            User homeroom10A1 = requireTeacher(
+                    teachersByName,
+                    "GV. Nguyễn Văn A"
+            );
 
-            if (scheduleRepository.count() == 0) {
-                scheduleRepository.saveAll(List.of(
-                        createSchedule("10A1", 0, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
-                        createSchedule("10A1", 0, "Tiết 2", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:50", "08:35"),
-                        createSchedule("10A1", 0, "Tiết 3", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "08:40", "09:25"),
-                        createSchedule("10A1", 0, "Tiết 4", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "09:30", "10:15"),
-                        createSchedule("10A1", 0, "Tiết 5", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "10:20", "11:05"),
-                        createSchedule("10A1", 1, "Tiết 1", "Sinh Học", teachersByName.get("GV. X"), "Phòng 201", "07:00", "07:45"),
-                        createSchedule("10A1", 1, "Tiết 2", "Lịch Sử", teachersByName.get("GV. Y"), "Phòng 202", "07:50", "08:35"),
-                        createSchedule("10A1", 1, "Tiết 3", "Địa Lý", teachersByName.get("GV. Z"), "Phòng 203", "08:40", "09:25"),
-                        createSchedule("10A1", 1, "Tiết 4", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "09:30", "10:15"),
-                        createSchedule("10A1", 2, "Tiết 1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
-                        createSchedule("10A1", 2, "Tiết 2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
-                        createSchedule("10A1", 2, "Tiết 3", "Thể Dục", teachersByName.get("GV. Sport"), "Sân bóng", "08:40", "09:25"),
-                        createSchedule("10A1", 3, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
-                        createSchedule("10A1", 3, "Tiết 2", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "07:50", "08:35"),
-                        createSchedule("10A1", 3, "Tiết 3", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "08:40", "09:25"),
-                        createSchedule("10A1", 3, "Tiết 4", "Tin Học", teachersByName.get("GV. Tech"), "Phòng Lab", "09:30", "10:15"),
-                        createSchedule("10A1", 4, "Tiết 1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
-                        createSchedule("10A1", 4, "Tiết 2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
-                        createSchedule("10A1", 4, "Tiết 3", "GDCD", teachersByName.get("GV. Moral"), "Phòng 306", "08:40", "09:25")
-                ));
-            }
+            User homeroom10A2 = requireTeacher(
+                    teachersByName,
+                    "GV. Lê Văn C"
+            );
 
-            if (notificationRepository.count() == 0) {
-                notificationRepository.saveAll(List.of(
-                        createNotification("Thông báo đóng học phí học kỳ 2", "Học sinh vui lòng đóng học phí trước ngày 15/04.", "Ban Giám Hiệu", "FEE", "02/03/2026"),
-                        createNotification("Thông báo nghỉ học ngày 08/03", "Trường nghỉ học để kỷ niệm.", "Ban Giám Hiệu", "IMPORTANT", "08/03/2026"),
-                        createNotification("Kết quả kiểm tra giữa kỳ", "Kết quả đã được đăng.", "Phòng Giáo Vụ", "SCHOOL", "10/03/2026"),
-                        createNotification("Hội thi văn nghệ chào mừng 20/11", "Tham gia đông đủ.", "Ban Tổ Chức", "SCHOOL", "20/11/2025"),
-                        createNotification("Thông báo về đồng phục học sinh", "Quy định mới về đồng phục.", "Ban Giám Hiệu", "IMPORTANT", "01/02/2026"),
-                        createNotification("Lịch thi học kỳ 2", "Lịch thi được cập nhật.", "Phòng Giáo Vụ", "IMPORTANT", "15/04/2026"),
-                        createNotification("Hoạt động ngoại khóa tháng 3", "Các hoạt động sẽ diễn ra.", "Ban Học Sinh", "SCHOOL", "05/03/2026")
-                ));
-            }
+            SchoolClass class10A1 = ensureSchoolClass(
+                    schoolClassRepository,
+                    "10A1",
+                    "Lớp 10A1",
+                    10,
+                    DEFAULT_SCHOOL_YEAR,
+                    homeroom10A1.getId()
+            );
 
-            if (assignmentRepository.count() == 0) {
-                assignmentRepository.saveAll(List.of(
-                        createAssignment("10A1", "Toán", "Bài tập về hàm số", teachersByName.get("GV. Nguyễn Văn A"), LocalDate.now().plusDays(7)),
-                        createAssignment("10A1", "Văn", "Làm văn tả người thân", teachersByName.get("GV. Trần Thị B"), LocalDate.now().plusDays(5)),
-                        createAssignment("10A1", "Anh Văn", "Unit 5 - Speaking exercises", teachersByName.get("GV. Lê Văn C"), LocalDate.now().plusDays(10))
-                ));
-            }
+            ensureSchoolClass(
+                    schoolClassRepository,
+                    "10A2",
+                    "Lớp 10A2",
+                    10,
+                    DEFAULT_SCHOOL_YEAR,
+                    homeroom10A2.getId()
+            );
+
+            User studentA = requireStudent(
+                    studentsByPhone,
+                    "0123456789"
+            );
+
+            ensureGrades(
+                    gradeRepository,
+                    objectMapper,
+                    studentA,
+                    teachersByName
+            );
+
+            ensureSchedules(
+                    scheduleRepository,
+                    class10A1,
+                    subjectsByName,
+                    teachersByName
+            );
+
+            ensureNotifications(notificationRepository);
+            ensureAssignments(assignmentRepository, teachersByName);
+            ensureInvoices(invoiceRepository, studentA);
         };
     }
 
-    private Role ensureRole(RoleRepository roleRepository, RoleName roleName, String description) {
-        return roleRepository.findByName(roleName).orElseGet(() -> {
-            Role role = new Role();
-            role.setName(roleName);
+    private Role ensureRole(
+            RoleRepository roleRepository,
+            RoleName roleName,
+            String description
+    ) {
+        Role role = roleRepository.findByName(roleName)
+                .orElseGet(() -> {
+                    Role created = new Role();
+                    created.setName(roleName);
+                    created.setDescription(description);
+                    return roleRepository.save(created);
+                });
+
+        if (role.getDescription() == null || role.getDescription().isBlank()) {
             role.setDescription(description);
-            return roleRepository.save(role);
-        });
+            role = roleRepository.save(role);
+        }
+
+        return role;
     }
 
-    private User createStudent(String name, String phoneNumber, String className, String email, LocalDate dateOfBirth, Role role) {
+    private void ensureSubjects(SubjectRepository subjectRepository) {
+        List<String> subjectNames = List.of(
+                "Toán",
+                "Văn",
+                "Anh Văn",
+                "Vật Lý",
+                "Hóa Học",
+                "Sinh Học",
+                "Lịch Sử",
+                "Địa Lý",
+                "Thể Dục",
+                "Tin Học",
+                "GDCD"
+        );
+
+        Map<String, Subject> existingSubjects = subjectRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        Subject::getName,
+                        Function.identity(),
+                        (first, second) -> first
+                ));
+
+        for (String subjectName : subjectNames) {
+            Subject subject = existingSubjects.get(subjectName);
+
+            if (subject == null) {
+                subject = new Subject();
+                subject.setName(subjectName);
+                subject.setDescription("Môn " + subjectName);
+                subjectRepository.save(subject);
+                continue;
+            }
+
+            if (subject.getDescription() == null
+                    || subject.getDescription().isBlank()) {
+                subject.setDescription("Môn " + subjectName);
+                subjectRepository.save(subject);
+            }
+        }
+    }
+
+    private void ensureUsers(
+            UserRepository userRepository,
+            Role studentRole,
+            Role teacherRole,
+            PasswordEncoder passwordEncoder
+    ) {
+        ensureUser(
+                userRepository,
+                createStudent(
+                        "Nguyễn Văn A",
+                        "0123456789",
+                        "10A1",
+                        "a@example.com",
+                        LocalDate.of(2008, 1, 1),
+                        studentRole
+                ),
+                studentRole,
+                passwordEncoder
+        );
+
+        ensureUser(
+                userRepository,
+                createStudent(
+                        "Trần Thị B",
+                        "0987654321",
+                        "10A1",
+                        "b@example.com",
+                        LocalDate.of(2008, 2, 2),
+                        studentRole
+                ),
+                studentRole,
+                passwordEncoder
+        );
+
+        ensureUser(
+                userRepository,
+                createStudent(
+                        "Lê Văn C",
+                        "0111222333",
+                        "10A2",
+                        "c@example.com",
+                        LocalDate.of(2008, 3, 3),
+                        studentRole
+                ),
+                studentRole,
+                passwordEncoder
+        );
+
+        ensureUser(userRepository, createTeacher("GV. Nguyễn Văn A", "0200000001", "Toán", "T001", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Trần Thị B", "0200000002", "Văn", "T002", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Lê Văn C", "0200000003", "Anh Văn", "T003", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Nguyễn Văn D", "0200000004", "Vật Lý", "T004", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Trần Thị E", "0200000005", "Hóa Học", "T005", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. X", "0200000006", "Sinh Học", "T006", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Y", "0200000007", "Lịch Sử", "T007", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Z", "0200000008", "Địa Lý", "T008", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Sport", "0200000009", "Thể Dục", "T009", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Tech", "0200000010", "Tin Học", "T010", teacherRole), teacherRole, passwordEncoder);
+        ensureUser(userRepository, createTeacher("GV. Moral", "0200000011", "GDCD", "T011", teacherRole), teacherRole, passwordEncoder);
+    }
+
+    private void ensureUser(
+            UserRepository userRepository,
+            User sample,
+            Role requiredRole,
+            PasswordEncoder passwordEncoder
+    ) {
+        User user = userRepository.findAll()
+                .stream()
+                .filter(item -> sample.getPhoneNumber().equals(item.getPhoneNumber()))
+                .findFirst()
+                .orElse(sample);
+
+        user.setName(defaultText(user.getName(), sample.getName()));
+        user.setPhoneNumber(sample.getPhoneNumber());
+        user.setClassName(defaultText(user.getClassName(), sample.getClassName()));
+        user.setEmail(defaultText(user.getEmail(), sample.getEmail()));
+        user.setDateOfBirth(user.getDateOfBirth() != null ? user.getDateOfBirth() : sample.getDateOfBirth());
+        user.setAddress(defaultText(user.getAddress(), sample.getAddress()));
+        user.setParentName(defaultText(user.getParentName(), sample.getParentName()));
+        user.setParentPhone(defaultText(user.getParentPhone(), sample.getParentPhone()));
+        user.setSubject(defaultText(user.getSubject(), sample.getSubject()));
+        user.setEmployeeCode(defaultText(user.getEmployeeCode(), sample.getEmployeeCode()));
+        user.setRoles(Collections.singleton(requiredRole));
+        user.setRoleId(requiredRole.getId());
+
+        String currentPassword = user.getPassword();
+        if (currentPassword == null
+                || currentPassword.isBlank()
+                || !isBcrypt(currentPassword)) {
+            String rawPassword = currentPassword == null || currentPassword.isBlank()
+                    ? DEFAULT_PASSWORD
+                    : currentPassword;
+            user.setPassword(passwordEncoder.encode(rawPassword));
+        }
+
+        userRepository.save(user);
+    }
+
+    private boolean isBcrypt(String password) {
+        return password.startsWith("$2a$")
+                || password.startsWith("$2b$")
+                || password.startsWith("$2y$");
+    }
+
+    private User createStudent(
+            String name,
+            String phoneNumber,
+            String className,
+            String email,
+            LocalDate dateOfBirth,
+            Role role
+    ) {
         User user = new User();
         user.setName(name);
         user.setPhoneNumber(phoneNumber);
         user.setClassName(className);
         user.setEmail(email);
         user.setDateOfBirth(dateOfBirth);
-        user.setRoles(Collections.singleton(role));
-        user.setRoleId(1L);
+        user.setAddress("Hà Nội");
         user.setParentName("Phụ huynh " + name);
         user.setParentPhone("0900000000");
-        user.setPassword("123456");
+        user.setSubject(NOT_APPLICABLE);
+        user.setEmployeeCode(NOT_APPLICABLE);
+        user.setPassword(DEFAULT_PASSWORD);
+        user.setRoles(Collections.singleton(role));
+        user.setRoleId(role.getId());
         return user;
     }
 
-    private User createTeacher(String name, String phoneNumber, String subject, String employeeCode, Role role) {
+    private User createTeacher(
+            String name,
+            String phoneNumber,
+            String subject,
+            String employeeCode,
+            Role role
+    ) {
         User user = new User();
         user.setName(name);
         user.setPhoneNumber(phoneNumber);
+        user.setClassName(NOT_APPLICABLE);
         user.setEmail(employeeCode.toLowerCase() + "@fschool.edu.vn");
+        user.setDateOfBirth(LocalDate.of(1990, 1, 1));
+        user.setAddress("Hà Nội");
+        user.setParentName(NOT_APPLICABLE);
+        user.setParentPhone("0000000000");
         user.setSubject(subject);
         user.setEmployeeCode(employeeCode);
+        user.setPassword(DEFAULT_PASSWORD);
         user.setRoles(Collections.singleton(role));
-        user.setRoleId(2L);
-        user.setPassword("123456");
+        user.setRoleId(role.getId());
         return user;
     }
 
-    private Long resolveTeacherId(Map<String, User> teachersByName, String subject) {
-        User teacher = teachersByName.get(resolveTeacherName(subject));
-        return teacher != null ? teacher.getId() : null;
+    private SchoolClass ensureSchoolClass(
+            SchoolClassRepository schoolClassRepository,
+            String code,
+            String name,
+            int gradeLevel,
+            String schoolYear,
+            Long homeroomTeacherId
+    ) {
+        SchoolClass schoolClass = schoolClassRepository
+                .findByCodeIgnoreCaseAndSchoolYear(code, schoolYear)
+                .orElseGet(SchoolClass::new);
+
+        schoolClass.setCode(code);
+        schoolClass.setName(name);
+        schoolClass.setGradeLevel(gradeLevel);
+        schoolClass.setSchoolYear(schoolYear);
+        schoolClass.setHomeroomTeacherId(homeroomTeacherId);
+        schoolClass.setMaximumStudents(DEFAULT_MAXIMUM_STUDENTS);
+        schoolClass.setStatus(SchoolClassStatus.ACTIVE);
+
+        return schoolClassRepository.save(schoolClass);
+    }
+
+    private void ensureGrades(
+            GradeRepository gradeRepository,
+            ObjectMapper objectMapper,
+            User student,
+            Map<String, User> teachersByName
+    ) {
+        if (gradeRepository.count() != 0) {
+            return;
+        }
+
+        List<String> subjects = List.of(
+                "Toán",
+                "Văn",
+                "Anh Văn",
+                "Vật Lý",
+                "Hóa Học",
+                "Sinh Học",
+                "Lịch Sử",
+                "Địa Lý",
+                "Thể Dục",
+                "Tin Học"
+        );
+
+        for (String subject : subjects) {
+            Grade grade = new Grade();
+            grade.setStudentId(student.getId());
+            grade.setClassName(requireText(student.getClassName(), "Lớp của học sinh"));
+            grade.setTeacherId(resolveTeacherIdRequired(teachersByName, subject));
+            grade.setSemester(DEFAULT_SEMESTER);
+            grade.setSubject(subject);
+
+            try {
+                if ("Toán".equals(subject)) {
+                    setGradeValues(objectMapper, grade, List.of(8.5, 9.0, 7.5), List.of(8.0, 8.5), 8.5, 9.0, 8.5);
+                } else if ("Văn".equals(subject)) {
+                    setGradeValues(objectMapper, grade, List.of(8.0, 7.5, 8.5), List.of(8.0, 7.5), 8.0, 8.5, 8.1);
+                } else if ("Anh Văn".equals(subject)) {
+                    setGradeValues(objectMapper, grade, List.of(9.0, 9.5, 9.0), List.of(9.0, 9.5), 9.0, 9.5, 9.2);
+                } else {
+                    setGradeValues(objectMapper, grade, List.of(8.0, 8.0, 8.0), List.of(8.0, 8.0), 8.0, 8.0, 8.0);
+                }
+            } catch (JsonProcessingException exception) {
+                throw new IllegalStateException(
+                        "Không thể chuyển điểm sang JSON cho môn " + subject,
+                        exception
+                );
+            }
+
+            gradeRepository.save(grade);
+        }
+    }
+
+    private void setGradeValues(
+            ObjectMapper objectMapper,
+            Grade grade,
+            List<Double> tx15,
+            List<Double> tx1Tiet,
+            double giuaKy,
+            double cuoiKy,
+            double average
+    ) throws JsonProcessingException {
+        grade.setTx15(objectMapper.writeValueAsString(tx15));
+        grade.setTx1tiet(objectMapper.writeValueAsString(tx1Tiet));
+        grade.setGiuaKy(giuaKy);
+        grade.setCuoiKy(cuoiKy);
+        grade.setAverage(average);
+    }
+
+    private void ensureSchedules(
+            ScheduleRepository scheduleRepository,
+            SchoolClass schoolClass,
+            Map<String, Subject> subjectsByName,
+            Map<String, User> teachersByName
+    ) {
+        if (scheduleRepository.count() != 0) {
+            return;
+        }
+
+        scheduleRepository.saveAll(List.of(
+                createSchedule(schoolClass, 0, "1", requireSubject(subjectsByName, "Toán"), requireTeacher(teachersByName, "GV. Nguyễn Văn A"), "Phòng 301"),
+                createSchedule(schoolClass, 0, "2", requireSubject(subjectsByName, "Văn"), requireTeacher(teachersByName, "GV. Trần Thị B"), "Phòng 302"),
+                createSchedule(schoolClass, 0, "3", requireSubject(subjectsByName, "Anh Văn"), requireTeacher(teachersByName, "GV. Lê Văn C"), "Phòng 303"),
+                createSchedule(schoolClass, 0, "4", requireSubject(subjectsByName, "Vật Lý"), requireTeacher(teachersByName, "GV. Nguyễn Văn D"), "Phòng 304"),
+                createSchedule(schoolClass, 0, "5", requireSubject(subjectsByName, "Hóa Học"), requireTeacher(teachersByName, "GV. Trần Thị E"), "Phòng 305"),
+
+                createSchedule(schoolClass, 1, "1", requireSubject(subjectsByName, "Sinh Học"), requireTeacher(teachersByName, "GV. X"), "Phòng 201"),
+                createSchedule(schoolClass, 1, "2", requireSubject(subjectsByName, "Lịch Sử"), requireTeacher(teachersByName, "GV. Y"), "Phòng 202"),
+                createSchedule(schoolClass, 1, "3", requireSubject(subjectsByName, "Địa Lý"), requireTeacher(teachersByName, "GV. Z"), "Phòng 203"),
+                createSchedule(schoolClass, 1, "4", requireSubject(subjectsByName, "Toán"), requireTeacher(teachersByName, "GV. Nguyễn Văn A"), "Phòng 301"),
+
+                createSchedule(schoolClass, 2, "1", requireSubject(subjectsByName, "Văn"), requireTeacher(teachersByName, "GV. Trần Thị B"), "Phòng 302"),
+                createSchedule(schoolClass, 2, "2", requireSubject(subjectsByName, "Anh Văn"), requireTeacher(teachersByName, "GV. Lê Văn C"), "Phòng 303"),
+                createSchedule(schoolClass, 2, "3", requireSubject(subjectsByName, "Thể Dục"), requireTeacher(teachersByName, "GV. Sport"), "Sân bóng"),
+
+                createSchedule(schoolClass, 3, "1", requireSubject(subjectsByName, "Toán"), requireTeacher(teachersByName, "GV. Nguyễn Văn A"), "Phòng 301"),
+                createSchedule(schoolClass, 3, "2", requireSubject(subjectsByName, "Vật Lý"), requireTeacher(teachersByName, "GV. Nguyễn Văn D"), "Phòng 304"),
+                createSchedule(schoolClass, 3, "3", requireSubject(subjectsByName, "Hóa Học"), requireTeacher(teachersByName, "GV. Trần Thị E"), "Phòng 305"),
+                createSchedule(schoolClass, 3, "4", requireSubject(subjectsByName, "Tin Học"), requireTeacher(teachersByName, "GV. Tech"), "Phòng Lab"),
+
+                createSchedule(schoolClass, 4, "1", requireSubject(subjectsByName, "Văn"), requireTeacher(teachersByName, "GV. Trần Thị B"), "Phòng 302"),
+                createSchedule(schoolClass, 4, "2", requireSubject(subjectsByName, "Anh Văn"), requireTeacher(teachersByName, "GV. Lê Văn C"), "Phòng 303"),
+                createSchedule(schoolClass, 4, "3", requireSubject(subjectsByName, "GDCD"), requireTeacher(teachersByName, "GV. Moral"), "Phòng 306")
+        ));
+    }
+
+    private Schedule createSchedule(
+            SchoolClass schoolClass,
+            int dayOfWeek,
+            String period,
+            Subject subject,
+            User teacher,
+            String room
+    ) {
+        if (schoolClass == null || schoolClass.getId() == null) {
+            throw new IllegalArgumentException("Lớp học không hợp lệ");
+        }
+
+        if (subject == null || subject.getId() == null) {
+            throw new IllegalArgumentException("Môn học không hợp lệ");
+        }
+
+        if (teacher == null || teacher.getId() == null) {
+            throw new IllegalArgumentException("Giáo viên không hợp lệ");
+        }
+
+        if (dayOfWeek < 0 || dayOfWeek > 6) {
+            throw new IllegalArgumentException("Ngày học phải từ 0 đến 6");
+        }
+
+        String normalizedPeriod = requireText(period, "Tiết học");
+        PeriodTime periodTime = PERIOD_TIMES.get(normalizedPeriod);
+
+        if (periodTime == null) {
+            throw new IllegalArgumentException("Tiết học phải từ 1 đến 10");
+        }
+
+        Schedule schedule = new Schedule();
+        schedule.setClassId(schoolClass.getId());
+        schedule.setClassName(requireText(schoolClass.getCode(), "Mã lớp"));
+        schedule.setDayOfWeek(dayOfWeek);
+        schedule.setPeriod(normalizedPeriod);
+        schedule.setSubjectId(subject.getId());
+        schedule.setSubject(requireText(subject.getName(), "Tên môn học"));
+        schedule.setTeacherId(teacher.getId());
+        schedule.setTeacher(requireText(teacher.getName(), "Tên giáo viên"));
+        schedule.setRoom(requireText(room, "Phòng học"));
+        schedule.setSchoolYear(DEFAULT_SCHOOL_YEAR);
+        schedule.setSemester(DEFAULT_SEMESTER);
+        schedule.setStartTime(periodTime.startTime());
+        schedule.setEndTime(periodTime.endTime());
+        return schedule;
+    }
+
+    private void ensureNotifications(NotificationRepository notificationRepository) {
+        if (notificationRepository.count() != 0) {
+            return;
+        }
+
+        notificationRepository.saveAll(List.of(
+                createNotification("Thông báo đóng học phí học kỳ 2", "Học sinh vui lòng đóng học phí trước ngày 15/04.", "Ban Giám Hiệu", "FEE", "02/03/2026"),
+                createNotification("Thông báo nghỉ học ngày 08/03", "Trường nghỉ học để kỷ niệm.", "Ban Giám Hiệu", "IMPORTANT", "08/03/2026"),
+                createNotification("Kết quả kiểm tra giữa kỳ", "Kết quả đã được đăng.", "Phòng Giáo Vụ", "SCHOOL", "10/03/2026"),
+                createNotification("Hội thi văn nghệ chào mừng 20/11", "Tham gia đông đủ.", "Ban Tổ Chức", "SCHOOL", "20/11/2025"),
+                createNotification("Thông báo về đồng phục học sinh", "Quy định mới về đồng phục.", "Ban Giám Hiệu", "IMPORTANT", "01/02/2026"),
+                createNotification("Lịch thi học kỳ 2", "Lịch thi được cập nhật.", "Phòng Giáo Vụ", "IMPORTANT", "15/04/2026"),
+                createNotification("Hoạt động ngoại khóa tháng 3", "Các hoạt động sẽ diễn ra.", "Ban Học Sinh", "SCHOOL", "05/03/2026")
+        ));
+    }
+
+    private Notification createNotification(
+            String title,
+            String content,
+            String sender,
+            String category,
+            String date
+    ) {
+        Notification notification = new Notification();
+        notification.setTitle(requireText(title, "Tiêu đề thông báo"));
+        notification.setContent(requireText(content, "Nội dung thông báo"));
+        notification.setSender(requireText(sender, "Người gửi"));
+        notification.setCategory(requireText(category, "Loại thông báo"));
+        notification.setCreatedAtCustom(LocalDateTime.now());
+        notification.setDate(requireText(date, "Ngày hiển thị"));
+        return notification;
+    }
+
+    private void ensureAssignments(
+            AssignmentRepository assignmentRepository,
+            Map<String, User> teachersByName
+    ) {
+        if (assignmentRepository.count() != 0) {
+            return;
+        }
+
+        assignmentRepository.saveAll(List.of(
+                createAssignment("10A1", "Toán", "Bài tập về hàm số", requireTeacher(teachersByName, "GV. Nguyễn Văn A"), LocalDate.now().plusDays(7)),
+                createAssignment("10A1", "Văn", "Làm văn tả người thân", requireTeacher(teachersByName, "GV. Trần Thị B"), LocalDate.now().plusDays(5)),
+                createAssignment("10A1", "Anh Văn", "Unit 5 - Speaking exercises", requireTeacher(teachersByName, "GV. Lê Văn C"), LocalDate.now().plusDays(10))
+        ));
+    }
+
+    private Assignment createAssignment(
+            String className,
+            String subject,
+            String title,
+            User teacher,
+            LocalDate dueDate
+    ) {
+        if (teacher == null || teacher.getId() == null) {
+            throw new IllegalArgumentException("Giáo viên không hợp lệ");
+        }
+
+        if (dueDate == null) {
+            throw new IllegalArgumentException("Hạn nộp không được để trống");
+        }
+
+        Assignment assignment = new Assignment();
+        assignment.setClassName(requireText(className, "Tên lớp"));
+        assignment.setSubject(requireText(subject, "Tên môn học"));
+        assignment.setTitle(requireText(title, "Tiêu đề bài tập"));
+        assignment.setDescription(title + " - chi tiết bài tập");
+        assignment.setTeacher(requireText(teacher.getName(), "Tên giáo viên"));
+        assignment.setTeacherId(teacher.getId());
+        assignment.setDueDate(dueDate);
+        assignment.setCreatedAtCustom(LocalDateTime.now());
+        return assignment;
+    }
+
+    private void ensureInvoices(
+            InvoiceRepository invoiceRepository,
+            User student
+    ) {
+        if (invoiceRepository.count() != 0) {
+            return;
+        }
+
+        // Tạo 3 hóa đơn mẫu cho học sinh Nguyễn Văn A
+        invoiceRepository.saveAll(List.of(
+                createInvoice(
+                        student,
+                        "Học phí Học kỳ 1 - Năm học 2026-2027",
+                        "Tiền học phí chuẩn theo quy định của trường",
+                        new java.math.BigDecimal("1500000"),
+                        LocalDateTime.now().plusDays(15),
+                        "PENDING"
+                ),
+                createInvoice(
+                        student,
+                        "Phí hoạt động ngoại khóa Họk1",
+                        "Phí tham gia các hoạt động ngoại khóa và câu lạc bộ",
+                        new java.math.BigDecimal("200000"),
+                        LocalDateTime.now().plusDays(10),
+                        "PENDING"
+                ),
+                createInvoice(
+                        student,
+                        "Phí ăn bán trú tháng 01/2026",
+                        "Phí dịch vụ ăn bán trú tại trường",
+                        new java.math.BigDecimal("600000"),
+                        LocalDateTime.now().minusDays(5),
+                        "PAID" // Hóa đơn này đã được thanh toán rồi (để demo)
+                )
+        ));
+    }
+
+    private Invoice createInvoice(
+            User student,
+            String title,
+            String description,
+            java.math.BigDecimal amount,
+            LocalDateTime dueDate,
+            String status
+    ) {
+        Invoice invoice = new Invoice();
+        invoice.setStudent(student);
+        invoice.setTitle(title);
+        invoice.setDescription(description);
+        invoice.setAmount(amount);
+        invoice.setDueDate(dueDate);
+        invoice.setStatus(status);
+        return invoice;
+    }
+
+    private Long resolveTeacherIdRequired(
+            Map<String, User> teachersByName,
+            String subject
+    ) {
+        String teacherName = resolveTeacherName(subject);
+
+        if (teacherName == null) {
+            throw new IllegalStateException(
+                    "Không có giáo viên được cấu hình cho môn " + subject
+            );
+        }
+
+        return requireTeacher(teachersByName, teacherName).getId();
     }
 
     private String resolveTeacherName(String subject) {
@@ -239,41 +726,64 @@ public class SampleDataLoader {
         };
     }
 
-    private Schedule createSchedule(String className, int day, String period, String subject, User teacher, String room, String start, String end) {
-        Schedule s = new Schedule();
-        s.setClassName(className);
-        s.setDayOfWeek(day);
-        s.setPeriod(period);
-        s.setSubject(subject);
-        s.setTeacher(teacher != null ? teacher.getName() : null);
-        s.setTeacherId(teacher != null ? teacher.getId() : null);
-        s.setRoom(room);
-        s.setStartTime(start);
-        s.setEndTime(end);
-        return s;
+    private Subject requireSubject(
+            Map<String, Subject> subjectsByName,
+            String subjectName
+    ) {
+        Subject subject = subjectsByName.get(subjectName);
+
+        if (subject == null || subject.getId() == null) {
+            throw new IllegalStateException(
+                    "Không tìm thấy môn học: " + subjectName
+            );
+        }
+
+        return subject;
     }
 
-    private Notification createNotification(String title, String content, String sender, String category, String date) {
-        Notification n = new Notification();
-        n.setTitle(title);
-        n.setContent(content);
-        n.setSender(sender);
-        n.setCategory(category);
-        n.setCreatedAtCustom(LocalDateTime.now());
-        n.setDate(date);
-        return n;
+    private User requireTeacher(
+            Map<String, User> teachersByName,
+            String teacherName
+    ) {
+        User teacher = teachersByName.get(teacherName);
+
+        if (teacher == null || teacher.getId() == null) {
+            throw new IllegalStateException(
+                    "Không tìm thấy giáo viên: " + teacherName
+            );
+        }
+
+        return teacher;
     }
 
-    private Assignment createAssignment(String className, String subject, String title, User teacher, LocalDate dueDate) {
-        Assignment a = new Assignment();
-        a.setClassName(className);
-        a.setSubject(subject);
-        a.setTitle(title);
-        a.setDescription(title + " - chi tiết bài tập");
-        a.setTeacher(teacher != null ? teacher.getName() : null);
-        a.setTeacherId(teacher != null ? teacher.getId() : null);
-        a.setDueDate(dueDate);
-        a.setCreatedAtCustom(LocalDateTime.now());
-        return a;
+    private User requireStudent(
+            Map<String, User> studentsByPhone,
+            String phoneNumber
+    ) {
+        User student = studentsByPhone.get(phoneNumber);
+
+        if (student == null || student.getId() == null) {
+            throw new IllegalStateException(
+                    "Không tìm thấy học sinh có số điện thoại: " + phoneNumber
+            );
+        }
+
+        return student;
+    }
+
+    private String defaultText(String currentValue, String defaultValue) {
+        return currentValue == null || currentValue.isBlank()
+                ? requireText(defaultValue, "Giá trị mặc định")
+                : currentValue.trim();
+    }
+
+    private String requireText(String value, String fieldName) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException(
+                    fieldName + " không được để trống"
+            );
+        }
+
+        return value.trim();
     }
 }

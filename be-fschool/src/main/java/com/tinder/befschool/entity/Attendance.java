@@ -1,3 +1,4 @@
+
 package com.tinder.befschool.entity;
 
 import jakarta.persistence.*;
