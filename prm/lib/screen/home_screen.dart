@@ -15,6 +15,7 @@ import 'teacher_conduct_screen.dart';
 import 'teacher_students_screen.dart';
 import 'chat_list_screen.dart';
 import 'student_attendent_report.dart';
+import 'invoice_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -298,6 +299,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     ]);
+
+    // Chỉ hiện mục Học phí cho học sinh
+    if (!user.isTeacher) {
+      items.add(
+        _buildFeatureCard(
+          title: 'Học phí',
+          icon: Icons.payment,
+          color: const Color(0xFF009688),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const InvoiceScreen()),
+          ),
+        ),
+      );
+    }
 
     return items;
   }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tinder.befschool.entity.Assignment;
 import com.tinder.befschool.entity.Grade;
+import com.tinder.befschool.entity.Invoice;
 import com.tinder.befschool.entity.Notification;
 import com.tinder.befschool.entity.Role;
 import com.tinder.befschool.entity.RoleName;
@@ -14,6 +15,7 @@ import com.tinder.befschool.entity.Subject;
 import com.tinder.befschool.entity.User;
 import com.tinder.befschool.repository.AssignmentRepository;
 import com.tinder.befschool.repository.GradeRepository;
+import com.tinder.befschool.repository.InvoiceRepository;
 import com.tinder.befschool.repository.NotificationRepository;
 import com.tinder.befschool.repository.RoleRepository;
 import com.tinder.befschool.repository.ScheduleRepository;
@@ -68,6 +70,7 @@ public class SampleDataLoader {
             AssignmentRepository assignmentRepository,
             SubjectRepository subjectRepository,
             SchoolClassRepository schoolClassRepository,
+            InvoiceRepository invoiceRepository,
             ObjectMapper objectMapper,
             PasswordEncoder passwordEncoder
     ) {
@@ -163,6 +166,7 @@ public class SampleDataLoader {
 
             ensureNotifications(notificationRepository);
             ensureAssignments(assignmentRepository, teachersByName);
+            ensureInvoices(invoiceRepository, studentA);
         };
     }
 
@@ -633,6 +637,61 @@ public class SampleDataLoader {
         assignment.setDueDate(dueDate);
         assignment.setCreatedAtCustom(LocalDateTime.now());
         return assignment;
+    }
+
+    private void ensureInvoices(
+            InvoiceRepository invoiceRepository,
+            User student
+    ) {
+        if (invoiceRepository.count() != 0) {
+            return;
+        }
+
+        // Tạo 3 hóa đơn mẫu cho học sinh Nguyễn Văn A
+        invoiceRepository.saveAll(List.of(
+                createInvoice(
+                        student,
+                        "Học phí Học kỳ 1 - Năm học 2026-2027",
+                        "Tiền học phí chuẩn theo quy định của trường",
+                        new java.math.BigDecimal("1500000"),
+                        LocalDateTime.now().plusDays(15),
+                        "PENDING"
+                ),
+                createInvoice(
+                        student,
+                        "Phí hoạt động ngoại khóa Họk1",
+                        "Phí tham gia các hoạt động ngoại khóa và câu lạc bộ",
+                        new java.math.BigDecimal("200000"),
+                        LocalDateTime.now().plusDays(10),
+                        "PENDING"
+                ),
+                createInvoice(
+                        student,
+                        "Phí ăn bán trú tháng 01/2026",
+                        "Phí dịch vụ ăn bán trú tại trường",
+                        new java.math.BigDecimal("600000"),
+                        LocalDateTime.now().minusDays(5),
+                        "PAID" // Hóa đơn này đã được thanh toán rồi (để demo)
+                )
+        ));
+    }
+
+    private Invoice createInvoice(
+            User student,
+            String title,
+            String description,
+            java.math.BigDecimal amount,
+            LocalDateTime dueDate,
+            String status
+    ) {
+        Invoice invoice = new Invoice();
+        invoice.setStudent(student);
+        invoice.setTitle(title);
+        invoice.setDescription(description);
+        invoice.setAmount(amount);
+        invoice.setDueDate(dueDate);
+        invoice.setStatus(status);
+        return invoice;
     }
 
     private Long resolveTeacherIdRequired(
