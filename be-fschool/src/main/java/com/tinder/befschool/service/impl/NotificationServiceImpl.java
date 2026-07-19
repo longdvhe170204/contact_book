@@ -27,4 +27,19 @@ public class NotificationServiceImpl implements NotificationService {
     public List<Notification> findByCategory(String category) {
         return notificationRepository.findByCategoryOrderByCreatedAtDesc(category);
     }
+
+    @Override
+    public Notification createNotification(Notification notification) {
+        notification.setCreatedAtCustom(java.time.LocalDateTime.now());
+        if(notification.getDate() == null || notification.getDate().isBlank()) {
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            notification.setDate(notification.getCreatedAtCustom().format(formatter));
+        }
+        return notificationRepository.save(notification);
+    }
+
+    @Override
+    public void deleteNotification(Long id) {
+        notificationRepository.deleteById(id);
+    }
 }

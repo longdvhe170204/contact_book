@@ -190,22 +190,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: _isLoading ? null : _handleLogin,
                             child: _isLoading
                                 ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                    ),
-                                  )
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
                                 : const Text(
-                                    "ĐĂNG NHẬP",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.5,
-                                    ),
-                                  ),
+                              "ĐĂNG NHẬP",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
                           ),
                         ),
 
@@ -267,7 +267,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final user = await ApiService.login(_phoneController.text, "123456");
-      
+
+      if (user.isAdmin) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Tài khoản quản trị viên vui lòng sử dụng Web Portal.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
+
       if (user.id <= 0) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -281,7 +293,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       await StorageService.saveUser(user);
-      
+
       if (mounted) {
         Navigator.pushReplacement(
           context,

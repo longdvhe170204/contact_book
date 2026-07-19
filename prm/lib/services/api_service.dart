@@ -11,11 +11,22 @@ import '../models/conduct.dart';
 import '../models/chat_message.dart';
 import 'storage_service.dart';
 
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 class ApiService {
-  // TODO: Thay đổi baseUrl khi deploy
-  static const String baseUrl = 'http://10.0.2.2:8080/api'; // Sử dụng 10.0.2.2 cho máy ảo Android
-  // Khi test trên thiết bị thật: 'http://YOUR_IP:8080/api'
-  // Khi deploy production: 'https://your-domain.com/api'
+  // Tự động nhận diện nền tảng để đổi baseUrl
+  static String get baseUrl {
+    if (kIsWeb) {
+      return 'http://localhost:8080/api';
+    } else if (Platform.isAndroid) {
+      // 10.0.2.2 là địa chỉ IP đặc biệt của Android Emulator để trỏ về localhost của máy tính
+      return 'http://10.0.2.2:8080/api';
+    } else {
+      // Dành cho iOS Simulator hoặc Windows/macOS Desktop app
+      return 'http://localhost:8080/api';
+    }
+  }
 
   // Common headers
   static Future<Map<String, String>> _getHeaders() async {
@@ -536,48 +547,4 @@ class ApiService {
       throw Exception('Failed to load chat history: $e');
     }
   }
-
-  // ===== PAYMENT - VNPAY =====
-
-  /// Lấy danh sách hóa đơn học phí của học sinh
-  static Future<List<Map<String, dynamic>>> getInvoices(int studentId) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/payments/invoices/$studentId'),
-        headers: headers,
-      );
-      if (response.statusCode == 200) {
-        final data = json.decode(utf8.decode(response.bodyBytes));
-        if (data is List) {
-          return data.cast<Map<String, dynamic>>();
-        }
-      }
-      return [];
-    } catch (e) {
-      throw Exception('Lỗi tải hóa đơn: $e');
-    }
-  }
-
-  /// Tạo URL thanh toán VNPay cho một hóa đơn
-  static Future<String> createVNPayPaymentUrl(int invoiceId) async {
-    try {
-      final headers = await _getHeaders();
-      final response = await http.post(
-        Uri.parse('$baseUrl/payments/vnpay/create-payment?invoiceId=$invoiceId'),
-        headers: headers,
-      );
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['status'] == 'success') {
-          return data['paymentUrl'];
-        }
-        throw Exception(data['message'] ?? 'Lỗi tạo URL thanh toán');
-      }
-      throw Exception('Lỗi kết nối: ${response.statusCode}');
-    } catch (e) {
-      throw Exception('Lỗi tạo thanh toán VNPay: $e');
-    }
-  }
 }
-

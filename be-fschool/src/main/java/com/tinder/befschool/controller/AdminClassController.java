@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/classes")
-@PreAuthorize("hasRole('TEACHER')") // Sau này đổi thành ADMIN.
+@PreAuthorize("hasRole('ADMIN')")
 @Validated
 public class AdminClassController {
     private final SchoolClassService service;
