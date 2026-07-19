@@ -23,6 +23,8 @@ public class TeacherAssignmentRequest {
     @FutureOrPresent
     private LocalDate dueDate;
 
+    private String fileUrl;
+
     public String getClassName() {
         return className;
     }
@@ -61,5 +63,13 @@ public class TeacherAssignmentRequest {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 }

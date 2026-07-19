@@ -123,7 +123,8 @@ public class TeacherServiceImpl implements TeacherService {
         assignment.setTeacherId(teacher.getId());
         assignment.setDueDate(request.getDueDate());
         assignment.setCreatedAtCustom(LocalDateTime.now());
-        
+        assignment.setFileUrl(request.getFileUrl());
+
         Assignment saved = assignmentRepository.save(assignment);
         
         // Notify students via email

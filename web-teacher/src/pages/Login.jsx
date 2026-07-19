@@ -48,6 +48,15 @@ const Login = () => {
       const response = await api.post('/auth/login', { phoneNumber, password });
       if (response.data.success) {
         const { token, user } = response.data.data;
+
+        // Kiểm tra quyền ADMIN
+        const isAdmin = user.roles && user.roles.some(r => r.name === 'ADMIN');
+        if (!isAdmin) {
+          setError('Bạn không có quyền truy cập trang quản trị này');
+          setIsLoading(false);
+          return;
+        }
+
         login({ ...user, accessToken: token });
         navigate('/');
       } else {

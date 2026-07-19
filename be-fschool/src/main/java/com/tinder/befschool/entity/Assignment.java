@@ -30,7 +30,18 @@ public class Assignment extends Auditable {
 
     private LocalDateTime createdAtCustom;
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
     // getters and setters
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
 
     public Long getId() {
         return id;

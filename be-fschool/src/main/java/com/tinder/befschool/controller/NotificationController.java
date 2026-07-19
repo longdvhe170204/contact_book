@@ -27,4 +27,18 @@ public class NotificationController {
     public ResponseEntity<ApiResponse<List<Notification>>> getByCategory(@PathVariable String category) {
         return ResponseEntity.ok(new ApiResponse<>(true, notificationService.findByCategory(category), "OK"));
     }
+
+    @PostMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Notification>> createNotification(@RequestBody Notification notification) {
+        Notification created = notificationService.createNotification(notification);
+        return ResponseEntity.ok(new ApiResponse<>(true, created, "Tạo thông báo thành công"));
+    }
+
+    @DeleteMapping("/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Void>> deleteNotification(@PathVariable Long id) {
+        notificationService.deleteNotification(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, null, "Xóa thông báo thành công"));
+    }
 }
