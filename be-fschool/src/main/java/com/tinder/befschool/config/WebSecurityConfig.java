@@ -74,6 +74,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/api/files/**").permitAll()
                                 .requestMatchers("/uploads/**").permitAll()
+                                .requestMatchers("/api/payments/vnpay/return").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));

@@ -4,15 +4,19 @@ import com.tinder.befschool.dto.ApiResponse;
 import com.tinder.befschool.dto.TeacherAssignmentRequest;
 import com.tinder.befschool.dto.TeacherGradeResponse;
 import com.tinder.befschool.dto.TeacherGradeUpsertRequest;
+import com.tinder.befschool.dto.schedule.LegacyScheduleResponse;
 import com.tinder.befschool.entity.Assignment;
 import com.tinder.befschool.entity.Grade;
-import com.tinder.befschool.entity.Schedule;
 import com.tinder.befschool.entity.User;
+import com.tinder.befschool.security.UserDetailsImpl;
+import com.tinder.befschool.service.PrmCompatibilityService;
 import com.tinder.befschool.service.TeacherService;
 import com.tinder.befschool.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,10 +34,14 @@ public class TeacherController {
 
     private final UserService userService;
     private final TeacherService teacherService;
+    private final PrmCompatibilityService prmCompatibilityService;
 
-    public TeacherController(UserService userService, TeacherService teacherService) {
+    public TeacherController(UserService userService,
+                             TeacherService teacherService,
+                             PrmCompatibilityService prmCompatibilityService) {
         this.userService = userService;
         this.teacherService = teacherService;
+        this.prmCompatibilityService = prmCompatibilityService;
     }
 
     @GetMapping
@@ -46,15 +54,25 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse<>(true, userService.findTeacherById(teacherId), "OK"));
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/{teacherId}/classes")
-    public ResponseEntity<ApiResponse<List<String>>> getClasses(@PathVariable Long teacherId) {
-        return ResponseEntity.ok(new ApiResponse<>(true, teacherService.findClassNames(teacherId), "OK"));
+    public ResponseEntity<ApiResponse<List<String>>> getClasses(
+            @AuthenticationPrincipal UserDetailsImpl currentUser,
+            @PathVariable Long teacherId) {
+        return ResponseEntity.ok(new ApiResponse<>(true,
+                prmCompatibilityService.findTeacherClasses(currentUser.getId(), teacherId),
+                "Lấy danh sách lớp thành công"));
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/{teacherId}/students")
-    public ResponseEntity<ApiResponse<List<User>>> getStudents(@PathVariable Long teacherId,
-                                                               @RequestParam(required = false) String className) {
-        return ResponseEntity.ok(new ApiResponse<>(true, teacherService.findStudents(teacherId, className), "OK"));
+    public ResponseEntity<ApiResponse<List<User>>> getStudents(
+            @AuthenticationPrincipal UserDetailsImpl currentUser,
+            @PathVariable Long teacherId,
+            @RequestParam(required = false) String className) {
+        return ResponseEntity.ok(new ApiResponse<>(true,
+                prmCompatibilityService.findTeacherStudents(currentUser.getId(), teacherId, className),
+                "Lấy danh sách học sinh thành công"));
     }
 
     @PostMapping("/{teacherId}/students")
@@ -65,9 +83,14 @@ public class TeacherController {
                 .body(new ApiResponse<>(true, saved, "Student added successfully"));
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/{teacherId}/schedules")
-    public ResponseEntity<ApiResponse<List<Schedule>>> getSchedules(@PathVariable Long teacherId) {
-        return ResponseEntity.ok(new ApiResponse<>(true, teacherService.findSchedules(teacherId), "OK"));
+    public ResponseEntity<ApiResponse<List<LegacyScheduleResponse>>> getSchedules(
+            @AuthenticationPrincipal UserDetailsImpl currentUser,
+            @PathVariable Long teacherId) {
+        return ResponseEntity.ok(new ApiResponse<>(true,
+                prmCompatibilityService.findTeacherSchedules(currentUser.getId(), teacherId),
+                "Lấy lịch dạy thành công"));
     }
 
     @GetMapping("/{teacherId}/assignments")

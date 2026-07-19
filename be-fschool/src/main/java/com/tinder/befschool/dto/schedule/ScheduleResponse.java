@@ -10,7 +10,7 @@ public record ScheduleResponse(
         Long teacherId,
         String teacherName,
         Integer dayOfWeek,
-        Integer period,
+        String period,
         Integer semester,
         String schoolYear,
         String room,

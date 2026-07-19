@@ -20,6 +20,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const AppBootstrap(),
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (_) => const AppBootstrap());
+      },
     );
   }
 }
