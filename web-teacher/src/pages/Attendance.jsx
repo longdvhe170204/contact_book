@@ -1,110 +1,245 @@
-import { useState, useEffect, useContext } from 'react';
-import { UserCheck, CheckCircle, XCircle, Clock, Loader2, AlertCircle, Download } from 'lucide-react';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import {
+  AlertCircle,
+  CheckCircle,
+  Download,
+  Loader2,
+  UserCheck
+} from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { AuthContext } from '../App';
 import api from '../services/api';
 
+const normalizeRoleName = (role) => {
+  if (!role) return '';
+  if (typeof role === 'string') return role.toUpperCase();
+  return String(role.name ?? role.roleName ?? '').toUpperCase();
+};
+
+const getRoleNames = (user) => {
+  const roles = Array.isArray(user?.roles) ? user.roles : [];
+  const roleNames = roles.map(normalizeRoleName).filter(Boolean);
+
+  if (user?.role) {
+    roleNames.push(normalizeRoleName(user.role));
+  }
+
+  return [...new Set(roleNames)];
+};
+
+const getLocalDateValue = () => {
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  return new Date(now.getTime() - offset * 60_000).toISOString().split('T')[0];
+};
+
 const Attendance = () => {
   const { user } = useContext(AuthContext);
+
+  const roleNames = useMemo(() => getRoleNames(user), [user]);
+  const isAdmin = roleNames.some(
+      (role) => role === 'ADMIN' || role === 'ROLE_ADMIN'
+  );
+  const isTeacher = roleNames.some(
+      (role) => role === 'TEACHER' || role === 'ROLE_TEACHER'
+  );
+
+  const [teachers, setTeachers] = useState([]);
+  const [selectedTeacherId, setSelectedTeacherId] = useState('');
   const [students, setStudents] = useState([]);
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-  
-  const [attendance, setAttendance] = useState({}); // { studentId: status }
-  const [notes, setNotes] = useState({}); // { studentId: note }
-  
+  const [selectedDate, setSelectedDate] = useState(getLocalDateValue);
+
+  const [attendance, setAttendance] = useState({});
+  const [notes, setNotes] = useState({});
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const activeTeacherId = isAdmin ? selectedTeacherId : user?.id;
+
   useEffect(() => {
+    if (!isAdmin) {
+      setTeachers([]);
+      setSelectedTeacherId('');
+      return;
+    }
+
+    const fetchTeachers = async () => {
+      try {
+        const res = await api.get('/teachers');
+        const teacherList = Array.isArray(res.data?.data) ? res.data.data : [];
+        setTeachers(teacherList);
+        setSelectedTeacherId((current) => {
+          if (teacherList.some((teacher) => String(teacher.id) === String(current))) {
+            return current;
+          }
+          return teacherList.length > 0 ? String(teacherList[0].id) : '';
+        });
+      } catch (err) {
+        console.error('Error fetching teachers', err.response?.data || err);
+        setTeachers([]);
+        setSelectedTeacherId('');
+      }
+    };
+
+    fetchTeachers();
+  }, [isAdmin]);
+
+  useEffect(() => {
+    setClasses([]);
+    setSelectedClass('');
+    setSubjects([]);
+    setSelectedSubject('');
+    setStudents([]);
+    setAttendance({});
+    setNotes({});
+
+    if (!activeTeacherId) return;
+
+    const fetchClasses = async () => {
+      try {
+        const res = await api.get(`/teachers/${activeTeacherId}/classes`);
+        const classList = Array.isArray(res.data?.data) ? res.data.data : [];
+        setClasses(classList);
+        setSelectedClass(classList.length > 0 ? classList[0] : '');
+      } catch (err) {
+        console.error('Error fetching classes', err.response?.data || err);
+        setClasses([]);
+        setSelectedClass('');
+      }
+    };
+
     fetchClasses();
-  }, [user]);
+  }, [activeTeacherId]);
 
   useEffect(() => {
-    if (selectedClass) {
-      fetchSubjects();
-    }
-  }, [user, selectedClass]);
+    setSubjects([]);
+    setSelectedSubject('');
+    setStudents([]);
+    setAttendance({});
+    setNotes({});
 
-  useEffect(() => {
-    if (selectedClass && selectedSubject && selectedDate) {
-      fetchStudentsAndAttendance();
-    }
-  }, [user, selectedClass, selectedSubject, selectedDate]);
+    if (!activeTeacherId || !selectedClass) return;
 
-  const fetchClasses = async () => {
-    try {
-      const res = await api.get(`/teachers/${user.id}/classes`);
-      setClasses(res.data.data);
-      if (res.data.data.length > 0) setSelectedClass(res.data.data[0]);
-    } catch(err) { console.error(err); }
-  };
+    const fetchSubjects = async () => {
+      try {
+        const res = await api.get(`/teachers/${activeTeacherId}/schedules`);
+        const schedules = Array.isArray(res.data?.data) ? res.data.data : [];
+        const classSchedules = schedules.filter(
+            (schedule) => schedule.className === selectedClass
+        );
+        const uniqueSubjects = [
+          ...new Set(classSchedules.map((schedule) => schedule.subject).filter(Boolean))
+        ];
 
-  const fetchSubjects = async () => {
-    try {
-      const res = await api.get(`/teachers/${user.id}/schedules`);
-      const classSchedules = res.data.data.filter(s => s.className === selectedClass);
-      const uniqueSubjects = [...new Set(classSchedules.map(s => s.subject))];
-      setSubjects(uniqueSubjects);
-      if (uniqueSubjects.length > 0) {
-        setSelectedSubject(uniqueSubjects[0]);
-      } else {
+        setSubjects(uniqueSubjects);
+        setSelectedSubject(uniqueSubjects.length > 0 ? uniqueSubjects[0] : '');
+      } catch (err) {
+        console.error('Error fetching subjects', err.response?.data || err);
+        setSubjects([]);
         setSelectedSubject('');
       }
-    } catch(err) { console.error(err); }
-  };
+    };
 
-  const fetchStudentsAndAttendance = async () => {
-    setIsLoading(true);
-    try {
-      const resSt = await api.get(`/teachers/${user.id}/students`, { params: { className: selectedClass } });
-      const studentList = resSt.data.data;
-      setStudents(studentList);
-      
-      let existingAtt = [];
+    fetchSubjects();
+  }, [activeTeacherId, selectedClass]);
+
+  useEffect(() => {
+    if (!activeTeacherId || !selectedClass || !selectedSubject || !selectedDate) {
+      setStudents([]);
+      setAttendance({});
+      setNotes({});
+      return;
+    }
+
+    const fetchStudentsAndAttendance = async () => {
+      setIsLoading(true);
       try {
-        const resAtt = await api.get(`/attendance/class/${selectedClass}/date/${selectedDate}`);
-        existingAtt = resAtt.data.data.filter(a => a.subject === selectedSubject);
-      } catch (e) {
-        console.error("Error fetching existing attendance", e);
+        const studentResponse = await api.get(
+            `/teachers/${activeTeacherId}/students`,
+            { params: { className: selectedClass } }
+        );
+        const studentList = Array.isArray(studentResponse.data?.data)
+            ? studentResponse.data.data
+            : [];
+        setStudents(studentList);
+
+        let existingAttendance = [];
+        try {
+          const attendanceResponse = await api.get(
+              `/attendance/class/${encodeURIComponent(selectedClass)}/date/${selectedDate}`
+          );
+          const allRecords = Array.isArray(attendanceResponse.data?.data)
+              ? attendanceResponse.data.data
+              : [];
+          existingAttendance = allRecords.filter(
+              (record) => record.subject === selectedSubject
+          );
+        } catch (err) {
+          console.error(
+              'Error fetching existing attendance',
+              err.response?.data || err
+          );
+        }
+
+        const initialAttendance = {};
+        const initialNotes = {};
+
+        studentList.forEach((student) => {
+          const existing = existingAttendance.find(
+              (record) => Number(record.studentId) === Number(student.id)
+          );
+          initialAttendance[student.id] = existing?.status ?? 'PRESENT';
+          initialNotes[student.id] = existing?.note ?? '';
+        });
+
+        setAttendance(initialAttendance);
+        setNotes(initialNotes);
+      } catch (err) {
+        console.error(
+            'Error fetching students and attendance',
+            err.response?.data || err
+        );
+        setStudents([]);
+        setAttendance({});
+        setNotes({});
+      } finally {
+        setIsLoading(false);
       }
-      
-      const initAttr = {};
-      const initNotes = {};
-      studentList.forEach(s => {
-        const found = existingAtt.find(a => a.studentId === s.id);
-        initAttr[s.id] = found ? found.status : 'PRESENT';
-        initNotes[s.id] = found ? (found.note || '') : '';
-      });
-      setAttendance(initAttr);
-      setNotes(initNotes);
-    } catch(err) { console.error(err); }
-    finally { setIsLoading(false); }
-  };
+    };
+
+    fetchStudentsAndAttendance();
+  }, [activeTeacherId, selectedClass, selectedSubject, selectedDate]);
 
   const handleStatusChange = (studentId, status) => {
-    setAttendance(prev => ({ ...prev, [studentId]: status }));
+    if (isAdmin) return;
+    setAttendance((current) => ({ ...current, [studentId]: status }));
   };
 
   const handleNoteChange = (studentId, note) => {
-    setNotes(prev => ({ ...prev, [studentId]: note }));
+    if (isAdmin) return;
+    setNotes((current) => ({ ...current, [studentId]: note }));
   };
 
   const handleSave = async () => {
-    if (!selectedClass || !selectedSubject) {
-      alert("Vui lòng chọn lớp và môn học!");
+    if (!isTeacher || isAdmin) {
+      alert('Admin chỉ được xem điểm danh.');
       return;
     }
-    
+    if (!user?.id || !selectedClass || !selectedSubject) {
+      alert('Vui lòng chọn lớp và môn học!');
+      return;
+    }
+
     setIsSaving(true);
     try {
-      const records = students.map(s => ({
-        studentId: s.id,
-        status: attendance[s.id] || 'PRESENT',
-        note: notes[s.id] || ''
+      const records = students.map((student) => ({
+        studentId: student.id,
+        status: attendance[student.id] || 'PRESENT',
+        note: notes[student.id] || ''
       }));
 
       const payload = {
@@ -117,131 +252,281 @@ const Attendance = () => {
       await api.post(`/attendance?teacherId=${user.id}`, payload);
       alert('Lưu điểm danh thành công!');
     } catch (err) {
-      alert('Có lỗi khi lưu điểm danh');
-    } finally { setIsSaving(false); }
+      console.error('Error saving attendance', err.response?.data || err);
+      alert(err.response?.data?.message || 'Có lỗi khi lưu điểm danh');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const downloadAttendance = () => {
     if (students.length === 0) {
-      alert("Chưa có danh sách học sinh để xuất file!");
+      alert('Chưa có danh sách học sinh để xuất file!');
       return;
     }
-    const data = students.map(s => ({
-      'ID Học sinh': s.id,
-      'Tên Học sinh': s.name,
-      'Số điện thoại': s.phoneNumber,
-      'Trạng thái': attendance[s.id] === 'PRESENT' ? 'Có mặt' : attendance[s.id] === 'ABSENT' ? 'Vắng mặt' : 'Muộn',
-      'Ghi chú': notes[s.id] || ''
+
+    const data = students.map((student) => ({
+      'ID Học sinh': student.id,
+      'Tên Học sinh': student.name,
+      'Số điện thoại': student.phoneNumber,
+      'Trạng thái':
+          attendance[student.id] === 'PRESENT'
+              ? 'Có mặt'
+              : attendance[student.id] === 'ABSENT'
+                  ? 'Vắng mặt'
+                  : 'Muộn',
+      'Ghi chú': notes[student.id] || ''
     }));
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "DiemDanh");
-    XLSX.writeFile(wb, `DiemDanh_${selectedClass}_${selectedSubject}_${selectedDate}.xlsx`);
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'DiemDanh');
+    XLSX.writeFile(
+        workbook,
+        `DiemDanh_${selectedClass}_${selectedSubject}_${selectedDate}.xlsx`
+    );
   };
 
   return (
-    <div className="attendance-page fade-in">
-      <div className="page-header">
-        <div className="header-info">
-          <h2 className="section-title">Điểm danh</h2>
-          <p className="section-desc">Ghi nhận sĩ số lớp học hằng ngày</p>
-        </div>
-        <div className="header-actions" style={{ display: 'flex', gap: '12px' }}>
-          <button className="btn-secondary" onClick={downloadAttendance}>
-            <Download size={20} />
-            <span>Xuất file Excel</span>
-          </button>
-          <button className="btn-primary" onClick={handleSave} disabled={isSaving || !selectedSubject}>
-            {isSaving ? <Loader2 className="spinner" size={20} /> : <CheckCircle size={20} />}
-            <span>{isSaving ? 'Đang lưu...' : 'Hoàn tất điểm danh'}</span>
-          </button>
-        </div>
-      </div>
+      <div className="attendance-page fade-in">
+        <div className="page-header">
+          <div className="header-info">
+            <h2 className="section-title">Điểm danh</h2>
+            <p className="section-desc">
+              {isAdmin
+                  ? 'Theo dõi sĩ số lớp học theo giáo viên'
+                  : 'Ghi nhận sĩ số lớp học hằng ngày'}
+            </p>
+          </div>
 
-      <div className="filters-card glass" style={{ marginTop: '24px' }}>
-        <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <div className="input-group">
-            <label>Lớp học</label>
-            <select value={selectedClass} onChange={e => setSelectedClass(e.target.value)}>
-              {classes.map(c => <option key={c} value={c}>Lớp {c}</option>)}
-            </select>
-          </div>
-          <div className="input-group">
-            <label>Môn học</label>
-            <select value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
-              {subjects.map(s => <option key={s} value={s}>{s}</option>)}
-              {subjects.length === 0 && <option value="">Không có môn học</option>}
-            </select>
-          </div>
-          <div className="input-group">
-            <label>Ngày điểm danh</label>
-            <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} />
+          <div className="header-actions" style={{ display: 'flex', gap: '12px' }}>
+            <button className="btn-secondary" onClick={downloadAttendance}>
+              <Download size={20} />
+              <span>Xuất file Excel</span>
+            </button>
+
+            {!isAdmin && (
+                <button
+                    className="btn-primary"
+                    onClick={handleSave}
+                    disabled={isSaving || !selectedSubject || students.length === 0}
+                >
+                  {isSaving ? (
+                      <Loader2 className="spinner" size={20} />
+                  ) : (
+                      <CheckCircle size={20} />
+                  )}
+                  <span>{isSaving ? 'Đang lưu...' : 'Hoàn tất điểm danh'}</span>
+                </button>
+            )}
           </div>
         </div>
-      </div>
 
-      <div className="students-attendance-list glass" style={{ marginTop: '32px', padding: '24px', borderRadius: 'var(--radius-xl)' }}>
-        {isLoading ? (
-          <div className="loading-state"><Loader2 className="spinner" size={48} /></div>
-        ) : !selectedSubject ? (
-          <div className="empty-state">
-            <AlertCircle size={48} color="var(--text-muted)" />
-            <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>Vui lòng chọn môn học để điểm danh.</p>
+        <div className="filters-card glass" style={{ marginTop: '24px' }}>
+          <div
+              style={{
+                display: 'flex',
+                gap: '24px',
+                alignItems: 'center',
+                flexWrap: 'wrap'
+              }}
+          >
+            {isAdmin && (
+                <div className="input-group">
+                  <label>Giáo viên</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <UserCheck size={18} />
+                    <select
+                        value={selectedTeacherId}
+                        onChange={(event) => setSelectedTeacherId(event.target.value)}
+                    >
+                      <option value="">Chọn giáo viên</option>
+                      {teachers.map((teacher) => (
+                          <option key={teacher.id} value={teacher.id}>
+                            {teacher.name}
+                          </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+            )}
+
+            <div className="input-group">
+              <label>Lớp học</label>
+              <select
+                  value={selectedClass}
+                  onChange={(event) => setSelectedClass(event.target.value)}
+                  disabled={!activeTeacherId || classes.length === 0}
+              >
+                {classes.length === 0 && <option value="">Không có lớp</option>}
+                {classes.map((className) => (
+                    <option key={className} value={className}>
+                      Lớp {className}
+                    </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="input-group">
+              <label>Môn học</label>
+              <select
+                  value={selectedSubject}
+                  onChange={(event) => setSelectedSubject(event.target.value)}
+                  disabled={!selectedClass || subjects.length === 0}
+              >
+                {subjects.map((subject) => (
+                    <option key={subject} value={subject}>
+                      {subject}
+                    </option>
+                ))}
+                {subjects.length === 0 && <option value="">Không có môn học</option>}
+              </select>
+            </div>
+
+            <div className="input-group">
+              <label>Ngày điểm danh</label>
+              <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(event) => setSelectedDate(event.target.value)}
+              />
+            </div>
           </div>
-        ) : (
-          <table className="grades-table">
-            <thead>
-              <tr>
-                <th>Học sinh</th>
-                <th>SĐT liên hệ</th>
-                <th style={{ textAlign: 'center' }}>Trạng thái & Ghi chú</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map(s => (
-                <tr key={s.id}>
-                  <td className="student-cell">
-                    <div className="mini-avatar">{s.name.charAt(0)}</div>
-                    <span>{s.name}</span>
-                  </td>
-                  <td style={{ color: 'var(--text-muted)' }}>{s.phoneNumber}</td>
-                  <td>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-                      <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: attendance[s.id] === 'PRESENT' ? 'var(--success)' : 'var(--text-muted)', fontWeight: attendance[s.id] === 'PRESENT' ? 700 : 400 }}>
-                          <input type="radio" checked={attendance[s.id] === 'PRESENT'} onChange={() => handleStatusChange(s.id, 'PRESENT')} style={{ accentColor: 'var(--success)' }} /> Có mặt
-                        </label>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: attendance[s.id] === 'ABSENT' ? 'var(--error)' : 'var(--text-muted)', fontWeight: attendance[s.id] === 'ABSENT' ? 700 : 400 }}>
-                          <input type="radio" checked={attendance[s.id] === 'ABSENT'} onChange={() => handleStatusChange(s.id, 'ABSENT')} style={{ accentColor: 'var(--error)' }} /> Vắng mặt
-                        </label>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: attendance[s.id] === 'LATE' ? 'var(--warning)' : 'var(--text-muted)', fontWeight: attendance[s.id] === 'LATE' ? 700 : 400 }}>
-                          <input type="radio" checked={attendance[s.id] === 'LATE'} onChange={() => handleStatusChange(s.id, 'LATE')} style={{ accentColor: 'var(--warning)' }} /> Muộn
-                        </label>
-                      </div>
-                      {attendance[s.id] !== 'PRESENT' && (
-                        <input 
-                          type="text" 
-                          placeholder="Ghi chú (lý do vắng/muộn...)" 
-                          value={notes[s.id] || ''}
-                          onChange={(e) => handleNoteChange(s.id, e.target.value)}
-                          style={{
-                            width: '80%', padding: '6px 12px', borderRadius: '6px',
-                            border: '1px solid var(--border)', fontSize: '13px',
-                            background: 'var(--background)'
-                          }}
-                        />
-                      )}
-                    </div>
-                  </td>
+        </div>
+
+        <div
+            className="students-attendance-list glass"
+            style={{
+              marginTop: '32px',
+              padding: '24px',
+              borderRadius: 'var(--radius-xl)'
+            }}
+        >
+          {isLoading ? (
+              <div className="loading-state">
+                <Loader2 className="spinner" size={48} />
+              </div>
+          ) : !activeTeacherId && isAdmin ? (
+              <div className="empty-state">
+                <AlertCircle size={48} color="var(--text-muted)" />
+                <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>
+                  Vui lòng chọn giáo viên để xem điểm danh.
+                </p>
+              </div>
+          ) : !selectedSubject ? (
+              <div className="empty-state">
+                <AlertCircle size={48} color="var(--text-muted)" />
+                <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>
+                  Vui lòng chọn môn học để xem điểm danh.
+                </p>
+              </div>
+          ) : students.length === 0 ? (
+              <div className="empty-state">
+                <AlertCircle size={48} color="var(--text-muted)" />
+                <p style={{ marginTop: '16px', color: 'var(--text-muted)' }}>
+                  Không có học sinh trong lớp này.
+                </p>
+              </div>
+          ) : (
+              <table className="grades-table">
+                <thead>
+                <tr>
+                  <th>Học sinh</th>
+                  <th>SĐT liên hệ</th>
+                  <th style={{ textAlign: 'center' }}>Trạng thái &amp; Ghi chú</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+                </thead>
+                <tbody>
+                {students.map((student) => (
+                    <tr key={student.id}>
+                      <td className="student-cell">
+                        <div className="mini-avatar">
+                          {String(student.name ?? '?').charAt(0)}
+                        </div>
+                        <span>{student.name ?? 'Không rõ tên'}</span>
+                      </td>
+                      <td style={{ color: 'var(--text-muted)' }}>
+                        {student.phoneNumber || '-'}
+                      </td>
+                      <td>
+                        <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '8px',
+                              alignItems: 'center'
+                            }}
+                        >
+                          <div
+                              style={{
+                                display: 'flex',
+                                gap: '16px',
+                                justifyContent: 'center',
+                                flexWrap: 'wrap'
+                              }}
+                          >
+                            {[
+                              ['PRESENT', 'Có mặt', 'var(--success)'],
+                              ['ABSENT', 'Vắng mặt', 'var(--error)'],
+                              ['LATE', 'Muộn', 'var(--warning)']
+                            ].map(([status, label, color]) => (
+                                <label
+                                    key={status}
+                                    style={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '8px',
+                                      cursor: isAdmin ? 'default' : 'pointer',
+                                      color:
+                                          attendance[student.id] === status
+                                              ? color
+                                              : 'var(--text-muted)',
+                                      fontWeight:
+                                          attendance[student.id] === status ? 700 : 400
+                                    }}
+                                >
+                                  <input
+                                      type="radio"
+                                      name={`attendance-${student.id}`}
+                                      checked={attendance[student.id] === status}
+                                      disabled={isAdmin}
+                                      onChange={() => handleStatusChange(student.id, status)}
+                                      style={{ accentColor: color }}
+                                  />
+                                  {label}
+                                </label>
+                            ))}
+                          </div>
+
+                          {attendance[student.id] !== 'PRESENT' && (
+                              <input
+                                  type="text"
+                                  placeholder="Ghi chú (lý do vắng/muộn...)"
+                                  value={notes[student.id] || ''}
+                                  disabled={isAdmin}
+                                  onChange={(event) =>
+                                      handleNoteChange(student.id, event.target.value)
+                                  }
+                                  style={{
+                                    width: '80%',
+                                    padding: '6px 12px',
+                                    borderRadius: '6px',
+                                    border: '1px solid var(--border)',
+                                    fontSize: '13px',
+                                    background: 'var(--background)'
+                                  }}
+                              />
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                ))}
+                </tbody>
+              </table>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
 export default Attendance;
-

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import '../services/storage_service.dart';
 import '../models/user.dart';
+import '../services/api_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -21,11 +22,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserData() async {
-    final user = await StorageService.getCurrentUser();
-    setState(() {
-      _user = user;
-      _isLoading = false;
-    });
+    try {
+      User? user;
+
+      try {
+        user = await ApiService.refreshCurrentUser();
+      } catch (e) {
+        debugPrint('Không thể đồng bộ hồ sơ: $e');
+        user = await StorageService.getCurrentUser();
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        _user = user;
+        _isLoading = false;
+      });
+    } catch (e) {
+      debugPrint('Lỗi tải hồ sơ: $e');
+
+      if (!mounted) return;
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override

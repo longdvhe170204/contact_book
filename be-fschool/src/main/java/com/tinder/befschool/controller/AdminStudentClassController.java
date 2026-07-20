@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin/students")
-@PreAuthorize("hasRole('TEACHER')") // Sau này đổi thành ADMIN.
+@PreAuthorize("hasRole('ADMIN')") // Sau này đổi thành ADMIN.
 public class AdminStudentClassController {
     private final SchoolClassService service;
 

@@ -99,6 +99,38 @@ class ApiService {
     }
   }
 
+  static Future<User> getCurrentUserFromServer() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/auth/me'),
+        headers: await _getHeaders(),
+      );
+
+      final data = _handleResponse(response);
+      final userData = _extractData(data);
+
+      if (userData is! Map<String, dynamic>) {
+        throw Exception('Dữ liệu người dùng không hợp lệ');
+      }
+
+      return User.fromJson(userData);
+    } catch (e) {
+      throw Exception('Không thể cập nhật người dùng: $e');
+    }
+  }
+
+  static Future<User> refreshCurrentUser() async {
+    final freshUser = await getCurrentUserFromServer();
+    final token = await StorageService.getToken();
+
+    await StorageService.saveUser(
+      freshUser,
+      token: token,
+    );
+
+    return freshUser;
+  }
+
   static Future<void> forgotPassword(String phoneNumber) async {
     try {
       final response = await http.post(
@@ -622,7 +654,6 @@ class ApiService {
       throw Exception('Failed to load chat history: $e');
     }
   }
-
   // ===== PAYMENT - VNPAY =====
 
   /// Lấy danh sách hóa đơn học phí của học sinh
@@ -666,4 +697,3 @@ class ApiService {
     }
   }
 }
-

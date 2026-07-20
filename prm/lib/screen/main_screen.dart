@@ -13,16 +13,30 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    NotificationScreen(),
-    ProfileScreen(),
-  ];
+  Widget _buildCurrentScreen() {
+    switch (_currentIndex) {
+      case 0:
+        return HomeScreen(
+          key: ValueKey('home-$_currentIndex'),
+        );
+
+      case 1:
+        return const NotificationScreen();
+
+      case 2:
+        return ProfileScreen(
+          key: ValueKey('profile-$_currentIndex'),
+        );
+
+      default:
+        return const HomeScreen();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: _buildCurrentScreen(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {

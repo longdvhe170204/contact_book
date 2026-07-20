@@ -51,7 +51,13 @@ class _ClassScheduleScreenState
   }
 
   Future<void> _initialize() async {
-    final user = await StorageService.getCurrentUser();
+    User? user;
+
+    try {
+      user = await ApiService.refreshCurrentUser();
+    } catch (_) {
+      user = await StorageService.getCurrentUser();
+    }
 
     if (!mounted) return;
 

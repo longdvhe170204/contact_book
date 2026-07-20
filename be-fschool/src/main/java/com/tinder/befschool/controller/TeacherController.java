@@ -54,7 +54,7 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse<>(true, userService.findTeacherById(teacherId), "OK"));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @GetMapping("/{teacherId}/classes")
     public ResponseEntity<ApiResponse<List<String>>> getClasses(
             @AuthenticationPrincipal UserDetailsImpl currentUser,
@@ -64,7 +64,7 @@ public class TeacherController {
                 "Lấy danh sách lớp thành công"));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @GetMapping("/{teacherId}/students")
     public ResponseEntity<ApiResponse<List<User>>> getStudents(
             @AuthenticationPrincipal UserDetailsImpl currentUser,
@@ -83,7 +83,7 @@ public class TeacherController {
                 .body(new ApiResponse<>(true, saved, "Student added successfully"));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @GetMapping("/{teacherId}/schedules")
     public ResponseEntity<ApiResponse<List<LegacyScheduleResponse>>> getSchedules(
             @AuthenticationPrincipal UserDetailsImpl currentUser,
@@ -106,14 +106,31 @@ public class TeacherController {
                 .body(new ApiResponse<>(true, assignment, "Assignment created successfully"));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @GetMapping("/{teacherId}/grades")
-    public ResponseEntity<ApiResponse<List<TeacherGradeResponse>>> getGrades(@PathVariable Long teacherId,
-                                                                             @RequestParam String className,
-                                                                             @RequestParam Integer semester,
-                                                                             @RequestParam(required = false) String subject) {
-        return ResponseEntity.ok(new ApiResponse<>(true, teacherService.findGrades(teacherId, className, semester, subject), "OK"));
+    public ResponseEntity<ApiResponse<List<TeacherGradeResponse>>> getGrades(
+            @AuthenticationPrincipal UserDetailsImpl currentUser,
+            @PathVariable Long teacherId,
+            @RequestParam String className,
+            @RequestParam Integer semester,
+            @RequestParam(required = false) String subject
+    ) {
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        teacherService.findGradesForViewer(
+                                currentUser.getId(),
+                                teacherId,
+                                className,
+                                semester,
+                                subject
+                        ),
+                        "OK"
+                )
+        );
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PutMapping("/{teacherId}/grades")
     public ResponseEntity<ApiResponse<Grade>> upsertGrade(@PathVariable Long teacherId,
                                                           @Valid @RequestBody TeacherGradeUpsertRequest request) {
@@ -121,6 +138,7 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse<>(true, grade, "Grade saved successfully"));
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/{teacherId}/grades/bulk")
     public ResponseEntity<ApiResponse<List<Grade>>> bulkUpsertGrades(@PathVariable Long teacherId,
                                                                      @RequestBody List<TeacherGradeUpsertRequest> requests) {

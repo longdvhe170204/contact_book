@@ -37,26 +37,48 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadData() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
     try {
-      final user = await StorageService.getCurrentUser();
+      User? user;
+
+      try {
+        // Ưu tiên lấy dữ liệu mới nhất từ backend
+        user = await ApiService.refreshCurrentUser();
+      } catch (e) {
+        // Nếu mất mạng thì dùng dữ liệu cache
+        debugPrint('Không thể đồng bộ user: $e');
+        user = await StorageService.getCurrentUser();
+      }
+
       final notifications = await ApiService.getNotifications();
+
       List<String> teacherClasses = [];
+
       if (user != null && user.isTeacher) {
-        teacherClasses = await ApiService.getTeacherClasses(user.id);
+        teacherClasses = await ApiService.getTeacherClasses(
+          user.id,
+        );
       }
-      if (!mounted) {
-        return;
-      }
+
+      if (!mounted) return;
+
       setState(() {
         _currentUser = user;
-        _latestNotification = notifications.isNotEmpty ? notifications.first : null;
+        _latestNotification =
+        notifications.isNotEmpty ? notifications.first : null;
         _teacherClasses = teacherClasses;
         _isLoading = false;
       });
-    } catch (_) {
-      if (!mounted) {
-        return;
-      }
+    } catch (e) {
+      debugPrint('Lỗi tải trang chủ: $e');
+
+      if (!mounted) return;
+
       setState(() {
         _isLoading = false;
       });

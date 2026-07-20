@@ -32,7 +32,10 @@ public class PrmCompatibilityServiceImpl implements PrmCompatibilityService {
 
     @Override
     public List<String> findTeacherClasses(Long authenticatedUserId, Long requestedTeacherId) {
-        assertSelf(authenticatedUserId, requestedTeacherId);
+        assertTeacherReadAccess(
+                authenticatedUserId,
+                requestedTeacherId
+        );
         getTeacher(requestedTeacherId);
 
         Set<String> classNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
@@ -48,7 +51,10 @@ public class PrmCompatibilityServiceImpl implements PrmCompatibilityService {
 
     @Override
     public List<User> findTeacherStudents(Long authenticatedUserId, Long requestedTeacherId, String className) {
-        assertSelf(authenticatedUserId, requestedTeacherId);
+        assertTeacherReadAccess(
+                authenticatedUserId,
+                requestedTeacherId
+        );
         getTeacher(requestedTeacherId);
 
         List<String> allowedClasses = findTeacherClasses(authenticatedUserId, requestedTeacherId);
@@ -69,7 +75,10 @@ public class PrmCompatibilityServiceImpl implements PrmCompatibilityService {
 
     @Override
     public List<LegacyScheduleResponse> findTeacherSchedules(Long authenticatedUserId, Long requestedTeacherId) {
-        assertSelf(authenticatedUserId, requestedTeacherId);
+        assertTeacherReadAccess(
+                authenticatedUserId,
+                requestedTeacherId
+        );
         getTeacher(requestedTeacherId);
         return scheduleRepository.findByTeacherIdOrderByDayOfWeekAscPeriodAsc(requestedTeacherId)
                 .stream().map(this::toLegacy).toList();
@@ -95,10 +104,39 @@ public class PrmCompatibilityServiceImpl implements PrmCompatibilityService {
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy giáo viên"));
     }
 
-    private void assertSelf(Long authenticatedUserId, Long requestedTeacherId) {
-        if (authenticatedUserId == null || !Objects.equals(authenticatedUserId, requestedTeacherId)) {
-            throw new ApiException("Không được truy cập dữ liệu của giáo viên khác");
+    private void assertTeacherReadAccess(
+            Long authenticatedUserId,
+            Long requestedTeacherId
+    ) {
+        if (authenticatedUserId == null) {
+            throw new ApiException("Người dùng chưa đăng nhập");
         }
+
+        User authenticatedUser = userRepository.findById(authenticatedUserId)
+                .orElseThrow(() -> new NotFoundException(
+                        "Không tìm thấy người dùng đang đăng nhập"
+                ));
+
+        boolean isAdmin = hasRole(authenticatedUser, RoleName.ADMIN);
+        boolean isTeacher = hasRole(authenticatedUser, RoleName.TEACHER);
+
+        if (isAdmin) {
+            return;
+        }
+
+        if (isTeacher
+                && Objects.equals(authenticatedUserId, requestedTeacherId)) {
+            return;
+        }
+
+        throw new ApiException(
+                "Bạn không có quyền truy cập dữ liệu của giáo viên này"
+        );
+    }
+    private boolean hasRole(User user, RoleName roleName) {
+        return user.getRoles() != null
+                && user.getRoles().stream()
+                .anyMatch(role -> roleName.equals(role.getName()));
     }
 
     private void requireClassName(String className) {

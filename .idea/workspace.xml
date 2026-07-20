@@ -5,40 +5,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/VNPayConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/PaymentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/entity/Invoice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/entity/Transaction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/InvoiceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/repository/TransactionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/VNPayService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/util/VNPayUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prm/lib/screen/invoice_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/markdown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/contact_book.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/contact_book.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/SampleDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/SampleDataLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/config/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AdminStudentClassController.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AdminStudentClassController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/TeacherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/controller/TeacherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/TeacherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/TeacherService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/PrmCompatibilityServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/PrmCompatibilityServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/TeacherServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/java/com/tinder/befschool/service/impl/TeacherServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/be-fschool/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/.dart_tool/dartpad/web_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/dartpad/web_plugin_registrant.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/.dart_tool/package_graph.json" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.dart_tool/package_graph.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/prm/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/android/prm_android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/prm/android/prm_android.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Flutter/Generated.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Flutter/ephemeral/flutter_lldb_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Flutter/ephemeral/flutter_lldb_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Flutter/ephemeral/flutter_lldbinit" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Flutter/ephemeral/flutter_lldbinit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/prm/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/class_schedule_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/class_schedule_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/main_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/main_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/screen/profile_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/screen/profile_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/lib/services/api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/prm/lib/services/api_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/prm/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/prm/linux/flutter/generated_plugins.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/prm/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/macos/Flutter/ephemeral/Flutter-Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/prm/macos/Flutter/ephemeral/Flutter-Generated.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/macos/Flutter/ephemeral/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/prm/macos/Flutter/ephemeral/flutter_export_environment.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/prm/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prm/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/prm/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/prm/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prm/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/prm/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react-dom_client.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-dev-runtime.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/node_modules/.vite/deps/react_jsx-runtime.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/src/pages/Attendance.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/src/pages/Attendance.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-teacher/src/pages/Grades.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-teacher/src/pages/Grades.jsx" afterDir="false" />
     </list>
-    <list default="true" id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,7 +75,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="425" />
+    <option name="cachedIndexableFilesCount" value="873" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -100,37 +122,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Merging quoc",
-    "git-widget-placeholder": "develop",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "T:/Flutter/prj_prm/gitProject/contact_book",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "show.migrate.to.gradle.popup": "false",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "D:\\JAVA\\IntelliJ IDEA 2025.3.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;T:/Flutter/prj_prm/gitProject/contact_book&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\JAVA\\IntelliJ IDEA 2025.3.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Prm\contact_book\be-fschool\src\main\java\com\tinder\befschool\service" />
@@ -160,16 +181,14 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28539.54" />
-        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28539.54" />
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="3406fb94-dfd7-43ef-9c11-e877e4862c0e" name="Changes" comment="" />
+      <changelist id="178d474f-ca82-46da-9c8c-c6fefc4b8df4" name="Changes" comment="" />
       <created>1782713674414</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -190,7 +209,8 @@
       <workItem from="1784305190565" duration="101000" />
       <workItem from="1784307460082" duration="3366000" />
       <workItem from="1784384315526" duration="350000" />
-      <workItem from="1784475640508" duration="162000" />
+      <workItem from="1784524509217" duration="2001000" />
+      <workItem from="1784527562924" duration="1969000" />
     </task>
     <servers />
   </component>

@@ -28,4 +28,24 @@ public interface TeacherService {
     User saveStudent(Long teacherId, User student);
 
     List<Grade> bulkUpsertGrades(Long teacherId, List<TeacherGradeUpsertRequest> requests);
+
+    List<TeacherGradeResponse> findGradesForViewer(
+            Long authenticatedUserId,
+            Long teacherId,
+            String className,
+            Integer semester,
+            String subject
+    );
+
+    Grade upsertGradeForTeacher(
+            Long authenticatedUserId,
+            Long teacherId,
+            TeacherGradeUpsertRequest request
+    );
+
+    List<Grade> bulkUpsertGradesForTeacher(
+            Long authenticatedUserId,
+            Long teacherId,
+            List<TeacherGradeUpsertRequest> requests
+    );
 }

@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -94,7 +95,7 @@ public class TeacherServiceImpl implements TeacherService {
 
         if (className != null && !className.isBlank()) {
             assertTeacherAssignedToClass(teacherId, className);
-            return userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, className);
+            return userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, className);
         }
 
         return userRepository.findByRoles_NameAndClassNameInOrderByClassNameAscNameAsc(RoleName.STUDENT, assignedClasses);
@@ -129,7 +130,7 @@ public class TeacherServiceImpl implements TeacherService {
         
         // Notify students via email
         try {
-            List<User> students = userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, request.getClassName());
+            List<User> students = userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, request.getClassName());
             String dueDateStr = request.getDueDate() != null ? request.getDueDate().toString() : "N/A";
             
             for (User student : students) {
@@ -161,7 +162,7 @@ public class TeacherServiceImpl implements TeacherService {
                 ? gradeRepository.findByTeacherIdAndClassNameAndSemesterOrderBySubjectAscStudentIdAsc(teacherId, className, semester)
                 : gradeRepository.findByTeacherIdAndClassNameAndSemesterAndSubjectOrderByStudentIdAsc(teacherId, className, semester, subject);
 
-        List<User> students = userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, className);
+        List<User> students = userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, className);
         Map<Long, User> studentsById = students.stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         return grades.stream().map(grade -> toTeacherGradeResponse(grade, studentsById.get(grade.getStudentId()))).toList();
@@ -307,5 +308,132 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         return Math.round((total / weight) * 100.0) / 100.0;
+    }
+
+    private void assertGradeReadAccess(
+            Long authenticatedUserId,
+            Long teacherId
+    ) {
+        User authenticatedUser = userRepository
+                .findById(authenticatedUserId)
+                .orElseThrow(() -> new ApiException(
+                        "Không tìm thấy người dùng đang đăng nhập"
+                ));
+
+        boolean isAdmin = hasRole(
+                authenticatedUser,
+                RoleName.ADMIN
+        );
+
+        boolean isTeacher = hasRole(
+                authenticatedUser,
+                RoleName.TEACHER
+        );
+
+        if (isAdmin) {
+            return;
+        }
+
+        if (isTeacher
+                && Objects.equals(authenticatedUserId, teacherId)) {
+            return;
+        }
+
+        throw new ApiException(
+                "Bạn không có quyền xem bảng điểm này"
+        );
+    }
+
+    private void assertGradeWriteAccess(
+            Long authenticatedUserId,
+            Long teacherId
+    ) {
+        User authenticatedUser = userRepository
+                .findById(authenticatedUserId)
+                .orElseThrow(() -> new ApiException(
+                        "Không tìm thấy người dùng đang đăng nhập"
+                ));
+
+        boolean isTeacher = hasRole(
+                authenticatedUser,
+                RoleName.TEACHER
+        );
+
+        if (!isTeacher) {
+            throw new ApiException(
+                    "Chỉ giáo viên mới được cập nhật điểm"
+            );
+        }
+
+        if (!Objects.equals(authenticatedUserId, teacherId)) {
+            throw new ApiException(
+                    "Giáo viên chỉ được cập nhật điểm của chính mình"
+            );
+        }
+    }
+
+    private boolean hasRole(User user, RoleName roleName) {
+        return user.getRoles() != null
+                && user.getRoles().stream()
+                .anyMatch(role -> roleName.equals(role.getName()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TeacherGradeResponse> findGradesForViewer(
+            Long authenticatedUserId,
+            Long teacherId,
+            String className,
+            Integer semester,
+            String subject
+    ) {
+        assertGradeReadAccess(
+                authenticatedUserId,
+                teacherId
+        );
+
+        return findGrades(
+                teacherId,
+                className,
+                semester,
+                subject
+        );
+    }
+
+    @Override
+    public Grade upsertGradeForTeacher(
+            Long authenticatedUserId,
+            Long teacherId,
+            TeacherGradeUpsertRequest request
+    ) {
+        assertGradeWriteAccess(
+                authenticatedUserId,
+                teacherId
+        );
+
+        return upsertGrade(
+                teacherId,
+                request
+        );
+    }
+
+    @Override
+    public List<Grade> bulkUpsertGradesForTeacher(
+            Long authenticatedUserId,
+            Long teacherId,
+            List<TeacherGradeUpsertRequest> requests
+    ) {
+        assertGradeWriteAccess(
+                authenticatedUserId,
+                teacherId
+        );
+
+        List<Grade> result = new ArrayList<>();
+
+        for (TeacherGradeUpsertRequest request : requests) {
+            result.add(upsertGrade(teacherId, request));
+        }
+
+        return result;
     }
 }

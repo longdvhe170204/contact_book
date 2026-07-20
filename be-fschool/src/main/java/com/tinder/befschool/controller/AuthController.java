@@ -84,4 +84,29 @@ public class AuthController {
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Liên kết đặt lại mật khẩu đã được gửi qua email liên kết với tài khoản này.", "Yêu cầu khôi phục mật khẩu thành công"));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<User>> getCurrentUser(
+            Authentication authentication) {
+
+        UserDetailsImpl userDetails =
+                (UserDetailsImpl) authentication.getPrincipal();
+
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Không tìm thấy người dùng id: "
+                                        + userDetails.getId()
+                        )
+                );
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        user,
+                        "Lấy thông tin người dùng thành công"
+                )
+        );
+    }
+
 }
