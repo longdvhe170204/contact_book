@@ -29,6 +29,8 @@ public class SampleDataLoader {
                              NotificationRepository notificationRepository,
                              AssignmentRepository assignmentRepository,
                              SubjectRepository subjectRepository,
+                             SchoolClassRepository schoolClassRepository,
+                             ClassMembershipRepository classMembershipRepository,
                              ObjectMapper objectMapper,
                              PasswordEncoder passwordEncoder) {
         return args -> {
@@ -51,7 +53,7 @@ public class SampleDataLoader {
                 List<User> initialUsers = List.of(
                         createStudent("Nguyễn Văn A", "0123456789", "10A1", "a@example.com", LocalDate.of(2008, 1, 1), studentRole),
                         createStudent("Trần Thị B", "0987654321", "10A1", "b@example.com", LocalDate.of(2008, 2, 2), studentRole),
-                        createStudent("Lê Văn C", "0111222333", "10A2", "c@example.com", LocalDate.of(2008, 3, 3), studentRole),
+                        createStudent("Lê Văn C", "0111222333", "10A1", "c@example.com", LocalDate.of(2008, 3, 3), studentRole),
                         createTeacher("GV. Nguyễn Văn A", "0200000001", "Toán", "T001", teacherRole),
                         createTeacher("GV. Trần Thị B", "0200000002", "Văn", "T002", teacherRole),
                         createTeacher("GV. Lê Văn C", "0200000003", "Anh Văn", "T003", teacherRole),
@@ -67,6 +69,30 @@ public class SampleDataLoader {
                 );
                 initialUsers.forEach(user -> user.setPassword(passwordEncoder.encode(user.getPassword())));
                 userRepository.saveAll(initialUsers);
+
+                if (schoolClassRepository.count() == 0) {
+                    SchoolClass class10A1 = new SchoolClass();
+                    class10A1.setCode("10A1");
+                    class10A1.setName("10A1");
+                    class10A1.setGradeLevel(10);
+                    class10A1.setSchoolYear("2025-2026");
+                    class10A1.setMaximumStudents(40);
+                    class10A1.setStatus(SchoolClassStatus.ACTIVE);
+                    schoolClassRepository.save(class10A1);
+
+                    List<String> phones = List.of("0123456789", "0987654321", "0111222333");
+                    for (String p : phones) {
+                        userRepository.findByPhoneNumber(p).ifPresent(student -> {
+                            ClassMembership cm = new ClassMembership();
+                            cm.setStudentId(student.getId());
+                            cm.setClassId(class10A1.getId());
+                            cm.setSchoolYear("2025-2026");
+                            cm.setJoinedDate(LocalDate.now());
+                            cm.setStatus(ClassMembershipStatus.ACTIVE);
+                            classMembershipRepository.save(cm);
+                        });
+                    }
+                }
             } else {
                 // Migration: Ensure existing users have roles and encrypted password
                 userRepository.findAll().forEach(user -> {
@@ -102,9 +128,9 @@ public class SampleDataLoader {
                 });
             }
 
-            Map<String, User> studentsByPhone = userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT).stream()
+            Map<String, User> studentsByPhone = userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT).stream()
                     .collect(Collectors.toMap(User::getPhoneNumber, Function.identity()));
-            Map<String, User> teachersByName = userRepository.findByRoles_NameOrderByNameAsc(RoleName.TEACHER).stream()
+            Map<String, User> teachersByName = userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.TEACHER).stream()
                     .collect(Collectors.toMap(User::getName, Function.identity()));
 
             User studentA = studentsByPhone.get("0123456789");
@@ -151,26 +177,29 @@ public class SampleDataLoader {
             }
 
             if (scheduleRepository.count() == 0) {
+                SchoolClass class10A1 = schoolClassRepository.findAll().stream().filter(c -> c.getCode().equals("10A1")).findFirst().orElse(null);
+                Long classId = class10A1 != null ? class10A1.getId() : 1L;
+
                 scheduleRepository.saveAll(List.of(
-                        createSchedule("10A1", 2, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
-                        createSchedule("10A1", 2, "Tiết 2", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:50", "08:35"),
-                        createSchedule("10A1", 2, "Tiết 3", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "08:40", "09:25"),
-                        createSchedule("10A1", 2, "Tiết 4", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "09:30", "10:15"),
-                        createSchedule("10A1", 2, "Tiết 5", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "10:20", "11:05"),
-                        createSchedule("10A1", 3, "Tiết 1", "Sinh Học", teachersByName.get("GV. X"), "Phòng 201", "07:00", "07:45"),
-                        createSchedule("10A1", 3, "Tiết 2", "Lịch Sử", teachersByName.get("GV. Y"), "Phòng 202", "07:50", "08:35"),
-                        createSchedule("10A1", 3, "Tiết 3", "Địa Lý", teachersByName.get("GV. Z"), "Phòng 203", "08:40", "09:25"),
-                        createSchedule("10A1", 3, "Tiết 4", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "09:30", "10:15"),
-                        createSchedule("10A1", 4, "Tiết 1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
-                        createSchedule("10A1", 4, "Tiết 2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
-                        createSchedule("10A1", 4, "Tiết 3", "Thể Dục", teachersByName.get("GV. Sport"), "Sân bóng", "08:40", "09:25"),
-                        createSchedule("10A1", 5, "Tiết 1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
-                        createSchedule("10A1", 5, "Tiết 2", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "07:50", "08:35"),
-                        createSchedule("10A1", 5, "Tiết 3", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "08:40", "09:25"),
-                        createSchedule("10A1", 5, "Tiết 4", "Tin Học", teachersByName.get("GV. Tech"), "Phòng Lab", "09:30", "10:15"),
-                        createSchedule("10A1", 6, "Tiết 1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
-                        createSchedule("10A1", 6, "Tiết 2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
-                        createSchedule("10A1", 6, "Tiết 3", "GDCD", teachersByName.get("GV. Moral"), "Phòng 306", "08:40", "09:25")
+                        createSchedule(classId, "10A1", 0, "1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
+                        createSchedule(classId, "10A1", 0, "2", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:50", "08:35"),
+                        createSchedule(classId, "10A1", 0, "3", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "08:40", "09:25"),
+                        createSchedule(classId, "10A1", 0, "4", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "09:30", "10:15"),
+                        createSchedule(classId, "10A1", 0, "5", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "10:20", "11:05"),
+                        createSchedule(classId, "10A1", 1, "1", "Sinh Học", teachersByName.get("GV. X"), "Phòng 201", "07:00", "07:45"),
+                        createSchedule(classId, "10A1", 1, "2", "Lịch Sử", teachersByName.get("GV. Y"), "Phòng 202", "07:50", "08:35"),
+                        createSchedule(classId, "10A1", 1, "3", "Địa Lý", teachersByName.get("GV. Z"), "Phòng 203", "08:40", "09:25"),
+                        createSchedule(classId, "10A1", 1, "4", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "09:30", "10:15"),
+                        createSchedule(classId, "10A1", 2, "1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
+                        createSchedule(classId, "10A1", 2, "2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
+                        createSchedule(classId, "10A1", 2, "3", "Thể Dục", teachersByName.get("GV. Sport"), "Sân bóng", "08:40", "09:25"),
+                        createSchedule(classId, "10A1", 3, "1", "Toán", teachersByName.get("GV. Nguyễn Văn A"), "Phòng 301", "07:00", "07:45"),
+                        createSchedule(classId, "10A1", 3, "2", "Vật Lý", teachersByName.get("GV. Nguyễn Văn D"), "Phòng 304", "07:50", "08:35"),
+                        createSchedule(classId, "10A1", 3, "3", "Hóa Học", teachersByName.get("GV. Trần Thị E"), "Phòng 305", "08:40", "09:25"),
+                        createSchedule(classId, "10A1", 3, "4", "Tin Học", teachersByName.get("GV. Tech"), "Phòng Lab", "09:30", "10:15"),
+                        createSchedule(classId, "10A1", 4, "1", "Văn", teachersByName.get("GV. Trần Thị B"), "Phòng 302", "07:00", "07:45"),
+                        createSchedule(classId, "10A1", 4, "2", "Anh Văn", teachersByName.get("GV. Lê Văn C"), "Phòng 303", "07:50", "08:35"),
+                        createSchedule(classId, "10A1", 4, "3", "GDCD", teachersByName.get("GV. Moral"), "Phòng 306", "08:40", "09:25")
                 ));
             }
 
@@ -266,9 +295,12 @@ public class SampleDataLoader {
         };
     }
 
-    private Schedule createSchedule(String className, int day, String period, String subject, User teacher, String room, String start, String end) {
+    private Schedule createSchedule(Long classId, String className, int day, String period, String subject, User teacher, String room, String start, String end) {
         Schedule s = new Schedule();
+        s.setClassId(classId);
         s.setClassName(className);
+        s.setSchoolYear("2025-2026");
+        s.setSemester(1);
         s.setDayOfWeek(day);
         s.setPeriod(period);
         s.setSubject(subject);

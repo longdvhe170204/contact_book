@@ -54,17 +54,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllStudents() {
-        return userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT);
+        return userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT);
     }
 
     @Override
     public List<User> findAllTeachers() {
-        return userRepository.findByRoles_NameOrderByNameAsc(RoleName.TEACHER);
+        return userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.TEACHER);
     }
 
     @Override
     public List<User> findStudentsByClassName(String className) {
-        return userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, className);
+        return userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, className);
     }
 
     @Override

@@ -26,6 +26,9 @@ const Students = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [editingStudent, setEditingStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
 
   // Form State
@@ -94,6 +97,55 @@ const Students = () => {
     }
   };
 
+  const handleEditClick = (student) => {
+    setEditingStudent(student);
+    setFormData({
+      name: student.name || '',
+      phoneNumber: student.phoneNumber || '',
+      email: student.email || '',
+      className: student.className || '',
+      dateOfBirth: student.dateOfBirth || '',
+      address: student.address || '',
+      parentName: student.parentName || '',
+      parentPhone: student.parentPhone || ''
+    });
+    setIsEditModalOpen(true);
+    setActiveDropdown(null);
+  };
+
+  const handleEditStudent = async (e) => {
+    e.preventDefault();
+    setIsAdding(true);
+    try {
+      await api.put(`/admin/students/${editingStudent.id}`, formData);
+      setIsEditModalOpen(false);
+      setEditingStudent(null);
+      setFormData({
+        name: '', phoneNumber: '', email: '', className: '',
+        dateOfBirth: '', address: '', parentName: '', parentPhone: ''
+      });
+      fetchStudents();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Không thể sửa học sinh. Vui lòng thử lại.');
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  const handleDeactivate = async (studentId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn vô hiệu hóa học sinh này? Học sinh sẽ không thể đăng nhập và không hiển thị trong danh sách mặc định.")) {
+      return;
+    }
+    try {
+      await api.put(`/admin/students/${studentId}/deactivate`);
+      fetchStudents();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Lỗi vô hiệu hóa học sinh.');
+    } finally {
+      setActiveDropdown(null);
+    }
+  };
+
   const filteredStudents = students.filter(s => 
     s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     s.phoneNumber.includes(searchTerm)
@@ -126,9 +178,13 @@ const Students = () => {
           <Filter size={20} />
           <select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
             <option value="">Tất cả các lớp</option>
-            {classes.map(c => (
-              <option key={c} value={c}>Lớp {c}</option>
-            ))}
+            {classes.map(c => {
+              const className = c?.name || c;
+              const classId = c?.id || className;
+              return (
+                <option key={classId} value={className}>Lớp {className}</option>
+              );
+            })}
           </select>
         </div>
       </div>
@@ -156,7 +212,27 @@ const Students = () => {
                   <h3>{student.name}</h3>
                   <span className="badge-class">Lớp {student.className}</span>
                 </div>
-                <button className="more-btn"><MoreVertical size={20} /></button>
+                <div className="dropdown-container" style={{ position: 'relative', marginLeft: 'auto' }}>
+                  <button className="more-btn" onClick={() => setActiveDropdown(activeDropdown === student.id ? null : student.id)}>
+                    <MoreVertical size={20} />
+                  </button>
+                  {activeDropdown === student.id && (
+                    <div className="dropdown-menu" style={{
+                      position: 'absolute', right: 0, top: '100%',
+                      background: 'white', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      zIndex: 10, minWidth: '150px', overflow: 'hidden'
+                    }}>
+                      <button onClick={() => handleEditClick(student)} style={{
+                        display: 'block', width: '100%', padding: '10px 16px', textAlign: 'left',
+                        background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px'
+                      }}>Sửa thông tin</button>
+                      <button onClick={() => handleDeactivate(student.id)} style={{
+                        display: 'block', width: '100%', padding: '10px 16px', textAlign: 'left',
+                        background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: 'var(--error)'
+                      }}>Vô hiệu hóa</button>
+                    </div>
+                  )}
+                </div>
               </div>
               
               <div className="student-details">
@@ -237,7 +313,13 @@ const Students = () => {
                     <label>Lớp học *</label>
                     <select name="className" value={formData.className} onChange={handleInputChange} required>
                       <option value="">Chọn lớp</option>
-                      {classes.map(c => <option key={c} value={c}>{c}</option>)}
+                      {classes.map(c => {
+                        const className = c?.name || c;
+                        const classId = c?.id || className;
+                        return (
+                          <option key={classId} value={className}>{className}</option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div className="input-group">
@@ -260,6 +342,81 @@ const Students = () => {
 
                 <div className="modal-actions">
                   <button type="button" className="btn-secondary" onClick={() => setIsAddModalOpen(false)}>Hủy</button>
+                  <button type="submit" className="btn-primary" disabled={isAdding}>
+                    {isAdding ? <Loader2 className="spinner" size={20} /> : <CheckCircle2 size={20} />}
+                    <span>{isAdding ? 'Đang lưu...' : 'Lưu học sinh'}</span>
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Student Modal */}
+      <AnimatePresence>
+        {isEditModalOpen && (
+          <div className="modal-overlay">
+            <motion.div 
+              className="modal-content glass"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            >
+              <div className="modal-header">
+                <h3>Sửa thông tin học sinh</h3>
+                <button className="close-btn" onClick={() => { setIsEditModalOpen(false); setEditingStudent(null); }}>
+                  <X size={24} />
+                </button>
+              </div>
+
+              <form className="add-student-form" onSubmit={handleEditStudent}>
+                <div className="form-grid">
+                  <div className="input-group">
+                    <label>Họ và tên *</label>
+                    <input name="name" value={formData.name} onChange={handleInputChange} required placeholder="Nguyễn Văn A" />
+                  </div>
+                  <div className="input-group">
+                    <label>Số điện thoại *</label>
+                    <input name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} required placeholder="09xxxxxxxx" />
+                  </div>
+                  <div className="input-group">
+                    <label>Email</label>
+                    <input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="student@school.edu.vn" />
+                  </div>
+                  <div className="input-group">
+                    <label>Lớp học *</label>
+                    <select name="className" value={formData.className} onChange={handleInputChange} required>
+                      <option value="">Chọn lớp</option>
+                      {classes.map(c => {
+                        const className = c?.name || c;
+                        const classId = c?.id || className;
+                        return (
+                          <option key={classId} value={className}>{className}</option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="input-group">
+                    <label>Ngày sinh</label>
+                    <input name="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleInputChange} />
+                  </div>
+                  <div className="input-group">
+                    <label>Địa chỉ</label>
+                    <input name="address" value={formData.address} onChange={handleInputChange} placeholder="Phường, Quận, Thành phố" />
+                  </div>
+                  <div className="input-group">
+                    <label>Tên phụ huynh</label>
+                    <input name="parentName" value={formData.parentName} onChange={handleInputChange} placeholder="Họ tên cha/mẹ" />
+                  </div>
+                  <div className="input-group">
+                    <label>SĐT phụ huynh</label>
+                    <input name="parentPhone" value={formData.parentPhone} onChange={handleInputChange} placeholder="09xxxxxxxx" />
+                  </div>
+                </div>
+
+                <div className="modal-actions">
+                  <button type="button" className="btn-secondary" onClick={() => { setIsEditModalOpen(false); setEditingStudent(null); }}>Hủy</button>
                   <button type="submit" className="btn-primary" disabled={isAdding}>
                     {isAdding ? <Loader2 className="spinner" size={20} /> : <CheckCircle2 size={20} />}
                     <span>{isAdding ? 'Đang lưu...' : 'Lưu học sinh'}</span>

@@ -57,7 +57,7 @@ public class PrmCompatibilityServiceImpl implements PrmCompatibilityService {
             if (!allowed) {
                 throw new ApiException("Giáo viên không được phân quyền với lớp " + className);
             }
-            return userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, className.trim());
+            return userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, className.trim());
         }
 
         if (allowedClasses.isEmpty()) {

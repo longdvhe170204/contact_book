@@ -94,7 +94,7 @@ public class TeacherServiceImpl implements TeacherService {
 
         if (className != null && !className.isBlank()) {
             assertTeacherAssignedToClass(teacherId, className);
-            return userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, className);
+            return userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, className);
         }
 
         return userRepository.findByRoles_NameAndClassNameInOrderByClassNameAscNameAsc(RoleName.STUDENT, assignedClasses);
@@ -129,7 +129,7 @@ public class TeacherServiceImpl implements TeacherService {
         
         // Notify students via email
         try {
-            List<User> students = userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, request.getClassName());
+            List<User> students = userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, request.getClassName());
             String dueDateStr = request.getDueDate() != null ? request.getDueDate().toString() : "N/A";
             
             for (User student : students) {
@@ -161,7 +161,7 @@ public class TeacherServiceImpl implements TeacherService {
                 ? gradeRepository.findByTeacherIdAndClassNameAndSemesterOrderBySubjectAscStudentIdAsc(teacherId, className, semester)
                 : gradeRepository.findByTeacherIdAndClassNameAndSemesterAndSubjectOrderByStudentIdAsc(teacherId, className, semester, subject);
 
-        List<User> students = userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, className);
+        List<User> students = userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, className);
         Map<Long, User> studentsById = students.stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         return grades.stream().map(grade -> toTeacherGradeResponse(grade, studentsById.get(grade.getStudentId()))).toList();

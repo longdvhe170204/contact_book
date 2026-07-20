@@ -12,7 +12,7 @@ import { adminScheduleApi } from '../../services/adminScheduleApi';
 
 import './ScheduleManagement.css';
 
-const DEFAULT_SCHOOL_YEAR = '2026-2027';
+const DEFAULT_SCHOOL_YEAR = '2025-2026';
 
 const DAYS = [
   { value: 0, label: 'Thứ 2' },
@@ -450,9 +450,6 @@ export default function ScheduleManagement() {
                       value={String(item.id)}
                   >
                     {item.code}
-                    {item.schoolYear
-                        ? ` - ${item.schoolYear}`
-                        : ''}
                   </option>
               ))}
             </select>
@@ -461,17 +458,19 @@ export default function ScheduleManagement() {
           <label>
             Năm học
 
-            <input
+            <select
                 value={filter.schoolYear}
-                pattern="\d{4}-\d{4}"
-                placeholder="2026-2027"
                 onChange={(event) =>
                     setFilter((current) => ({
                       ...current,
                       schoolYear: event.target.value,
                     }))
                 }
-            />
+            >
+              <option value="2024-2025">2024-2025</option>
+              <option value="2025-2026">2025-2026</option>
+              <option value="2026-2027">2026-2027</option>
+            </select>
           </label>
 
           <label>
@@ -834,10 +833,8 @@ export default function ScheduleManagement() {
                   <label>
                     Năm học
 
-                    <input
+                    <select
                         required
-                        pattern="\d{4}-\d{4}"
-                        title="Năm học phải có dạng 2026-2027"
                         value={form.schoolYear}
                         onChange={(event) =>
                             setForm((current) => ({
@@ -846,8 +843,11 @@ export default function ScheduleManagement() {
                               event.target.value,
                             }))
                         }
-                        placeholder="2026-2027"
-                    />
+                    >
+                      <option value="2024-2025">2024-2025</option>
+                      <option value="2025-2026">2025-2026</option>
+                      <option value="2026-2027">2026-2027</option>
+                    </select>
                   </label>
 
                   <button

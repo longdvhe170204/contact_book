@@ -13,9 +13,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByIdAndRoles_Name(Long id, RoleName roleName);
 
-    List<User> findByRoles_NameOrderByNameAsc(RoleName roleName);
+    @org.springframework.data.jpa.repository.Query("SELECT DISTINCT u.className FROM User u WHERE u.className IS NOT NULL ORDER BY u.className ASC")
+    List<String> findDistinctClassNames();
 
-    List<User> findByRoles_NameAndClassNameOrderByNameAsc(RoleName roleName, String className);
+    List<User> findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName roleName);
+
+    List<User> findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName roleName, String className);
 
     List<User> findByRoles_NameAndClassNameInOrderByClassNameAscNameAsc(RoleName roleName, Collection<String> classNames);
 

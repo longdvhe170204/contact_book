@@ -12,6 +12,7 @@ const Teachers = () => {
   const [currentTeacher, setCurrentTeacher] = useState({
     name: '',
     phoneNumber: '',
+    email: '',
     subject: '',
     employeeCode: '',
     address: ''
@@ -45,6 +46,7 @@ const Teachers = () => {
       setCurrentTeacher({
         name: '',
         phoneNumber: '',
+        email: '',
         subject: '',
         employeeCode: '',
         address: ''
@@ -82,14 +84,14 @@ const Teachers = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa giáo viên này?')) {
+    if (window.confirm('Bạn có chắc chắn muốn vô hiệu hóa (xóa mềm) giáo viên này? Giáo viên sẽ không thể đăng nhập và bị ẩn khỏi danh sách.')) {
       try {
         await adminTeacherApi.deleteTeacher(id);
-        alert('Xóa thành công');
+        alert('Đã vô hiệu hóa giáo viên thành công');
         fetchTeachers();
       } catch (error) {
         console.error('Error deleting teacher', error);
-        alert('Lỗi khi xóa giáo viên');
+        alert('Lỗi khi vô hiệu hóa giáo viên');
       }
     }
   };
@@ -98,6 +100,7 @@ const Teachers = () => {
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Họ và Tên', flex: 1 },
     { field: 'phoneNumber', headerName: 'Số điện thoại', flex: 1 },
+    { field: 'email', headerName: 'Email', flex: 1 },
     { field: 'employeeCode', headerName: 'Mã NV', flex: 1 },
     { field: 'subject', headerName: 'Bộ môn', flex: 1 },
     {
@@ -170,6 +173,16 @@ const Teachers = () => {
             value={currentTeacher.phoneNumber}
             onChange={handleChange}
             required
+          />
+          <TextField
+            margin="dense"
+            name="email"
+            label="Email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={currentTeacher.email || ''}
+            onChange={handleChange}
           />
           <TextField
             margin="dense"

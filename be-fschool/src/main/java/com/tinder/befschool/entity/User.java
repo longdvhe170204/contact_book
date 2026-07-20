@@ -70,6 +70,9 @@ public class User extends Auditable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
     public Long getId() {
         return id;
     }
@@ -173,6 +176,14 @@ public class User extends Auditable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Long getRoleId() {

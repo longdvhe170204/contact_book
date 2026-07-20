@@ -92,8 +92,8 @@ public class AdminController {
 
     @GetMapping("/dashboard-stats")
     public ResponseEntity<ApiResponse<DashboardStatsResponse>> getDashboardStats() {
-        List<User> allStudents = userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT);
-        List<User> allTeachers = userRepository.findByRoles_NameOrderByNameAsc(RoleName.TEACHER);
+        List<User> allStudents = userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT);
+        List<User> allTeachers = userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.TEACHER);
         List<Attendance> allAttendance = attendanceRepository.findAll();
 
         DashboardStatsResponse stats = new DashboardStatsResponse();
@@ -154,7 +154,7 @@ public class AdminController {
 
 //    @GetMapping("/classes")
 //    public ResponseEntity<ApiResponse<List<String>>> getAllClasses() {
-//        List<User> allStudents = userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT);
+//        List<User> allStudents = userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT);
 //        List<String> classes = allStudents.stream()
 //                .map(User::getClassName)
 //                .filter(c -> c != null && !c.isBlank())
@@ -167,7 +167,7 @@ public class AdminController {
     @GetMapping("/teachers")
     public ResponseEntity<ApiResponse<List<TeacherOptionResponse>>> getAllTeachers() {
         List<TeacherOptionResponse> teachers = userRepository
-                .findByRoles_NameOrderByNameAsc(RoleName.TEACHER)
+                .findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.TEACHER)
                 .stream()
                 .map(user -> new TeacherOptionResponse(
                         user.getId(), user.getName(), user.getPhoneNumber(),
@@ -180,9 +180,9 @@ public class AdminController {
     public ResponseEntity<ApiResponse<List<User>>> getAllStudents(@RequestParam(required = false) String className) {
         List<User> students;
         if (className != null && !className.isBlank()) {
-            students = userRepository.findByRoles_NameAndClassNameOrderByNameAsc(RoleName.STUDENT, className);
+            students = userRepository.findByRoles_NameAndClassNameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT, className);
         } else {
-            students = userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT);
+            students = userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT);
         }
         return ResponseEntity.ok(new ApiResponse<>(true, students, "OK"));
     }
@@ -212,6 +212,33 @@ public class AdminController {
 
         User saved = userRepository.save(student);
         return ResponseEntity.ok(new ApiResponse<>(true, saved, "Thêm học sinh thành công"));
+    }
+
+    @PutMapping("/students/{id}")
+    public ResponseEntity<ApiResponse<User>> updateStudent(@PathVariable Long id, @RequestBody User studentData) {
+        User student = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy học sinh"));
+        
+        student.setName(studentData.getName());
+        student.setPhoneNumber(studentData.getPhoneNumber());
+        student.setEmail(studentData.getEmail());
+        student.setClassName(studentData.getClassName());
+        student.setDateOfBirth(studentData.getDateOfBirth());
+        student.setAddress(studentData.getAddress());
+        student.setParentName(studentData.getParentName());
+        student.setParentPhone(studentData.getParentPhone());
+        
+        User saved = userRepository.save(student);
+        return ResponseEntity.ok(new ApiResponse<>(true, saved, "Cập nhật học sinh thành công"));
+    }
+
+    @PutMapping("/students/{id}/deactivate")
+    public ResponseEntity<ApiResponse<Void>> deactivateStudent(@PathVariable Long id) {
+        User student = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy học sinh"));
+        student.setIsActive(false);
+        userRepository.save(student);
+        return ResponseEntity.ok(new ApiResponse<>(true, null, "Đã vô hiệu hóa học sinh"));
     }
 
     @PostMapping("/teachers")
@@ -261,7 +288,8 @@ public class AdminController {
     public ResponseEntity<ApiResponse<Void>> deleteTeacher(@PathVariable Long id) {
         User teacher = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy giáo viên"));
-        userRepository.delete(teacher);
-        return ResponseEntity.ok(new ApiResponse<>(true, null, "Xóa giáo viên thành công"));
+        teacher.setIsActive(false);
+        userRepository.save(teacher);
+        return ResponseEntity.ok(new ApiResponse<>(true, null, "Xóa (Vô hiệu hóa) giáo viên thành công"));
     }
 }

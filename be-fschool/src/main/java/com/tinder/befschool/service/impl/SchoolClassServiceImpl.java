@@ -108,7 +108,7 @@ public class SchoolClassServiceImpl implements SchoolClassService {
                 .map(ClassMembership::getStudentId)
                 .collect(Collectors.toSet());
 
-        return userRepository.findByRoles_NameOrderByNameAsc(RoleName.STUDENT)
+        return userRepository.findByRoles_NameAndIsActiveTrueOrderByNameAsc(RoleName.STUDENT)
                 .stream()
                 .filter(student -> !assignedIds.contains(student.getId()))
                 .map(student -> new UnassignedStudentResponse(

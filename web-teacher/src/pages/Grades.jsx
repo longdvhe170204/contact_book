@@ -50,10 +50,21 @@ const Grades = () => {
 
   const fetchClasses = async () => {
     try {
-      const res = await api.get(`/teachers/${user.id}/classes`);
-      setClasses(res.data.data);
-      if (res.data.data.length > 0) {
-        setSelectedClass(res.data.data[0]);
+      const isAdmin = user.roles && user.roles.some(r => r.name === 'ADMIN');
+      let res;
+      let classList = [];
+      
+      if (isAdmin) {
+        res = await api.get('/admin/grades/classes');
+        classList = res.data.data;
+      } else {
+        res = await api.get(`/teachers/${user.id}/classes`);
+        classList = res.data.data;
+      }
+      
+      setClasses(classList);
+      if (classList.length > 0) {
+        setSelectedClass(classList[0]);
       }
     } catch (err) {
       console.error('Error fetching classes', err);
@@ -63,7 +74,10 @@ const Grades = () => {
   const fetchGrades = async () => {
     setIsLoading(true);
     try {
-      const res = await api.get(`/teachers/${user.id}/grades`, {
+      const isAdmin = user.roles && user.roles.some(r => r.name === 'ADMIN');
+      const endpoint = isAdmin ? '/admin/grades' : `/teachers/${user.id}/grades`;
+      
+      const res = await api.get(endpoint, {
         params: { 
           className: selectedClass, 
           semester: selectedSemester,
@@ -73,8 +87,10 @@ const Grades = () => {
       setGrades(res.data.data);
       
       // Extract unique subjects from grades to show in filter
-      const uniqueSubjects = [...new Set(res.data.data.map(g => g.subject))];
-      setSubjects(uniqueSubjects);
+      if (!selectedSubject) {
+        const uniqueSubjects = [...new Set(res.data.data.map(g => g.subject))].filter(Boolean);
+        setSubjects(uniqueSubjects);
+      }
     } catch (err) {
       console.error('Error fetching grades', err);
     } finally {
@@ -209,8 +225,8 @@ const Grades = () => {
         <div className="filters-group">
           <div className="filter-item">
             <TableIcon size={18} />
-            <select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
-              {classes.map(c => <option key={c} value={c}>Lớp {c}</option>)}
+            <select value={selectedClass} onChange={(e) => { setSelectedClass(e.target.value); setSelectedSubject(''); }}>
+              {classes.map(c => <option key={c} value={c}>{c.startsWith('Lớp') || c === 'Không áp dụng' ? c : `Lớp ${c}`}</option>)}
             </select>
           </div>
           <div className="filter-item">
@@ -222,7 +238,7 @@ const Grades = () => {
           </div>
           <div className="filter-item">
             <Calendar size={18} />
-            <select value={selectedSemester} onChange={(e) => setSelectedSemester(Number(e.target.value))}>
+            <select value={selectedSemester} onChange={(e) => { setSelectedSemester(Number(e.target.value)); setSelectedSubject(''); }}>
               <option value={1}>Học kỳ 1</option>
               <option value={2}>Học kỳ 2</option>
             </select>

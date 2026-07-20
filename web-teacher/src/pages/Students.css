@@ -142,10 +142,11 @@
 }
 
 .more-btn {
-  position: absolute;
-  right: -8px;
-  top: 0;
   color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
 }
 
 .student-details {

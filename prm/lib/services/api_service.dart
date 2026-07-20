@@ -27,10 +27,6 @@ class ApiService {
       return 'http://localhost:8080/api';
     }
   }
-  // TODO: Thay đổi baseUrl khi deploy
-  static const String baseUrl = 'http://localhost:8080/api'; // Sử dụng 10.0.2.2 cho máy ảo Android
-  // Khi test trên thiết bị thật: 'http://YOUR_IP:8080/api'
-  // Khi deploy production: 'https://your-domain.com/api'
 
   // Common headers
   static Future<Map<String, String>> _getHeaders() async {

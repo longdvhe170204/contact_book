@@ -82,7 +82,9 @@ const DashboardLayout = () => {
             </div>
             <div className="user-info">
               <p className="user-name">{user?.name || 'Giáo viên'}</p>
-              <p className="user-role">Giáo viên</p>
+              <p className="user-role">
+                {user?.roles?.some(r => r.name === 'ADMIN') ? 'Quản trị viên' : 'Giáo viên'}
+              </p>
             </div>
           </div>
           <button className="logout-btn" onClick={handleLogout}>

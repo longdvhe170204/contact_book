@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -201,6 +201,7 @@ class _TeacherAssignmentsScreenState extends State<TeacherAssignmentsScreen> {
                     TextField(
                       controller: subjectController,
                       decoration: const InputDecoration(labelText: 'Môn học'),
+                      readOnly: true,
                     ),
                     const SizedBox(height: 12),
                     TextField(
@@ -389,6 +390,7 @@ class _TeacherAssignmentsScreenState extends State<TeacherAssignmentsScreen> {
                     TextField(
                       controller: subjectController,
                       decoration: const InputDecoration(labelText: 'Môn học'),
+                      readOnly: true,
                     ),
                     const SizedBox(height: 12),
                     TextField(

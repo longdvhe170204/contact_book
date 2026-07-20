@@ -9,6 +9,7 @@
       "dependencies": [
         "app_links",
         "cupertino_icons",
+        "file_picker",
         "flutter",
         "http",
         "shared_preferences",
@@ -68,6 +69,19 @@
         "url_launcher_platform_interface",
         "url_launcher_web",
         "url_launcher_windows"
+      ]
+    },
+    {
+      "name": "file_picker",
+      "version": "6.2.1",
+      "dependencies": [
+        "ffi",
+        "flutter",
+        "flutter_plugin_android_lifecycle",
+        "flutter_web_plugins",
+        "path",
+        "plugin_platform_interface",
+        "win32"
       ]
     },
     {
@@ -303,6 +317,39 @@
       ]
     },
     {
+      "name": "win32",
+      "version": "5.15.0",
+      "dependencies": [
+        "ffi"
+      ]
+    },
+    {
+      "name": "ffi",
+      "version": "2.2.0",
+      "dependencies": []
+    },
+    {
+      "name": "plugin_platform_interface",
+      "version": "2.1.8",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "flutter_plugin_android_lifecycle",
+      "version": "2.0.35",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
+      "name": "flutter_web_plugins",
+      "version": "0.0.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "web",
       "version": "0.5.1",
       "dependencies": []
@@ -464,20 +511,6 @@
       ]
     },
     {
-      "name": "flutter_web_plugins",
-      "version": "0.0.0",
-      "dependencies": [
-        "flutter"
-      ]
-    },
-    {
-      "name": "plugin_platform_interface",
-      "version": "2.1.8",
-      "dependencies": [
-        "meta"
-      ]
-    },
-    {
       "name": "gtk",
       "version": "2.2.0",
       "dependencies": [
@@ -534,11 +567,6 @@
     {
       "name": "vm_service",
       "version": "15.2.0",
-      "dependencies": []
-    },
-    {
-      "name": "ffi",
-      "version": "2.2.0",
       "dependencies": []
     },
     {
