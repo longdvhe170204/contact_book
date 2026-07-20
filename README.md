@@ -76,7 +76,19 @@ Nếu bạn muốn thao tác trên nền tảng Web thay vì điện thoại:
 
 * Mật khẩu: `123456`
 
+## 🔑 Thông tin đăng nhập mặc định (Dữ liệu mẫu)
+
+Sau khi hệ thống khởi động thành công, bạn có thể đăng nhập thử ngay bằng các tài khoản đã được tạo tự động:
+
+**Tài khoản Học sinh:**
+* Số điện thoại: `0123456789`
+* Mật khẩu: `123456`
+
 **Tài khoản Giáo viên:**
 * Số điện thoại: `0200000001`
 * Mật khẩu: `123456`
-# Contact Book
+
+**Tài khoản Admin:**
+* Số điện thoại: `0999999999`
+* Mật khẩu: `123456`
+
